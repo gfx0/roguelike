@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="roguelike">
+      <UniqueIdentifier>{a3080a2d-af22-4783-9b56-da904c6aae41}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>roguelike</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sdlhelpers.h">
+      <Filter>roguelike</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

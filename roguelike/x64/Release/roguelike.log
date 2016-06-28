@@ -1,0 +1,9 @@
+﻿Build started 28.6.2016 18.19.25.
+     1>Project "C:\github\roguelike\roguelike\roguelike.vcxproj" on node 2 (Build target(s)).
+     1>Link:
+         roguelike.vcxproj -> C:\github\roguelike\x64\Release\roguelike.exe
+     1>Done Building Project "C:\github\roguelike\roguelike\roguelike.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.03
