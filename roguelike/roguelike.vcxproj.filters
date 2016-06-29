@@ -4,15 +4,30 @@
     <Filter Include="roguelike">
       <UniqueIdentifier>{a3080a2d-af22-4783-9b56-da904c6aae41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="roguelike\player">
+      <UniqueIdentifier>{427721d7-cc99-4d60-8fbf-df359f78dc28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="roguelike\tech">
+      <UniqueIdentifier>{28c6c295-b822-404c-8cc2-ecf69354226e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>roguelike</Filter>
     </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>roguelike\player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sdlhelpers.h">
       <Filter>roguelike</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>roguelike\player</Filter>
+    </ClInclude>
+    <ClInclude Include="globals.h">
+      <Filter>roguelike\tech</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
