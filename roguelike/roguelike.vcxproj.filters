@@ -4,30 +4,117 @@
     <Filter Include="roguelike">
       <UniqueIdentifier>{a3080a2d-af22-4783-9b56-da904c6aae41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="roguelike\player">
-      <UniqueIdentifier>{427721d7-cc99-4d60-8fbf-df359f78dc28}</UniqueIdentifier>
+    <Filter Include="roguelike\Game">
+      <UniqueIdentifier>{2ffd8469-67d4-4334-a752-a7715a738e86}</UniqueIdentifier>
     </Filter>
-    <Filter Include="roguelike\tech">
+    <Filter Include="roguelike\Tech">
       <UniqueIdentifier>{28c6c295-b822-404c-8cc2-ecf69354226e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="roguelike\Tech\StateMachine">
+      <UniqueIdentifier>{bf71a974-bdc4-4e66-869b-5374ade8e92c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="roguelike\Tech\SDL">
+      <UniqueIdentifier>{308889c0-70cb-43b3-90a6-552effb1e90b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="roguelike\Game\GameStates">
+      <UniqueIdentifier>{8049f2a1-5b3d-4b53-9d86-789ede1f078e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="roguelike\Tech\Input">
+      <UniqueIdentifier>{14d02592-4528-4a20-b3b6-a4c6abbd8d71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="roguelike\Tech\Rendering">
+      <UniqueIdentifier>{f089edce-395d-4e37-ab0a-6188974c99a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="roguelike\Tech\EngineComponent">
+      <UniqueIdentifier>{f367c861-f67e-45d8-9bea-d7158d064d81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="roguelike\Tech\OperatingSystem">
+      <UniqueIdentifier>{673ed616-4c9b-4bb5-af0a-fe0f5af05211}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>roguelike</Filter>
     </ClCompile>
-    <ClCompile Include="player.cpp">
-      <Filter>roguelike\player</Filter>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>roguelike\Tech\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>roguelike\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="InitGameState.cpp">
+      <Filter>roguelike\Game\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>roguelike\Tech\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderingSystem.cpp">
+      <Filter>roguelike\Tech\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateBase.cpp">
+      <Filter>roguelike\Tech\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayGameState.cpp">
+      <Filter>roguelike\Game\GameStates</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageLoader.cpp">
+      <Filter>roguelike\Tech\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="FontLoader.cpp">
+      <Filter>roguelike\Tech\Rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineComponentManager.cpp">
+      <Filter>roguelike\Tech\EngineComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineComponentBase.cpp">
+      <Filter>roguelike\Tech\EngineComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="OperatingSystem.cpp">
+      <Filter>roguelike\Tech\OperatingSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="StateMachine.h">
+      <Filter>roguelike\Tech\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>roguelike\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="settings.h">
+      <Filter>roguelike\Tech</Filter>
+    </ClInclude>
     <ClInclude Include="sdlhelpers.h">
-      <Filter>roguelike</Filter>
+      <Filter>roguelike\Tech\SDL</Filter>
     </ClInclude>
-    <ClInclude Include="player.h">
-      <Filter>roguelike\player</Filter>
+    <ClInclude Include="InitGameState.h">
+      <Filter>roguelike\Game\GameStates</Filter>
     </ClInclude>
-    <ClInclude Include="globals.h">
-      <Filter>roguelike\tech</Filter>
+    <ClInclude Include="InputManager.h">
+      <Filter>roguelike\Tech\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderingSystem.h">
+      <Filter>roguelike\Tech\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateBase.h">
+      <Filter>roguelike\Tech\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayGameState.h">
+      <Filter>roguelike\Game\GameStates</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageLoader.h">
+      <Filter>roguelike\Tech\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="FontLoader.h">
+      <Filter>roguelike\Tech\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineComponentManager.h">
+      <Filter>roguelike\Tech\EngineComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineComponentBase.h">
+      <Filter>roguelike\Tech\EngineComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="OperatingSystem.h">
+      <Filter>roguelike\Tech\OperatingSystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

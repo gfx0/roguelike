@@ -1,9 +1,42 @@
-﻿Build started 28.6.2016 18.19.25.
+﻿Build started 20.7.2016 1.47.54.
      1>Project "C:\github\roguelike\roguelike\roguelike.vcxproj" on node 2 (Build target(s)).
-     1>Link:
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I"C:\github\roguelike\\cpplibs\SDL2_ttf-2.0.14\include" /I"C:\github\roguelike\\cpplibs\SDL2_image-2.0.1\include" /I"C:\github\roguelike\\cpplibs\SDL2-2.0.4\include" /I"C:\Program Files (x86)\Visual Leak Detector\include" /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D _MBCS /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Release\\" /Fd"x64\Release\vc140.pdb" /Gd /TP /errorReport:prompt FontLoader.cpp Game.cpp EngineComponentBase.cpp EngineComponentManager.cpp GameStateBase.cpp ImageLoader.cpp InputManager.cpp main.cpp InitGameState.cpp OperatingSystem.cpp PlayGameState.cpp RenderingSystem.cpp StateMachine.cpp
+         FontLoader.cpp
+         Game.cpp
+         EngineComponentBase.cpp
+         EngineComponentManager.cpp
+         GameStateBase.cpp
+         ImageLoader.cpp
+         InputManager.cpp
+         main.cpp
+         InitGameState.cpp
+         OperatingSystem.cpp
+         PlayGameState.cpp
+         RenderingSystem.cpp
+         StateMachine.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\github\roguelike\x64\Release\roguelike.exe" /NOLOGO /LIBPATH:"C:\github\roguelike\\cpplibs\SDL2_ttf-2.0.14\lib\x64" /LIBPATH:"C:\github\roguelike\\cpplibs\SDL2_image-2.0.1\lib\x64" /LIBPATH:"C:\github\roguelike\\cpplibs\SDL2-2.0.4\lib\x64" /LIBPATH:"C:\Program Files (x86)\Visual Leak Detector\lib\Win64" SDL2_ttf.lib SDL2_image.lib SDL2.lib SDL2main.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\github\roguelike\x64\Release\roguelike.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\github\roguelike\x64\Release\roguelike.lib" /MACHINE:X64 x64\Release\FontLoader.obj
+         x64\Release\Game.obj
+         x64\Release\EngineComponentBase.obj
+         x64\Release\EngineComponentManager.obj
+         x64\Release\GameStateBase.obj
+         x64\Release\ImageLoader.obj
+         x64\Release\InputManager.obj
+         x64\Release\main.obj
+         x64\Release\InitGameState.obj
+         x64\Release\OperatingSystem.obj
+         x64\Release\PlayGameState.obj
+         x64\Release\RenderingSystem.obj
+         x64\Release\StateMachine.obj
+         Generating code
+         19 of 700 functions ( 2.7%) were compiled, the rest were copied from previous compilation.
+           0 functions were new in current compilation
+           6 functions had inline decision re-evaluated but remain unchanged
+         Finished generating code
          roguelike.vcxproj -> C:\github\roguelike\x64\Release\roguelike.exe
      1>Done Building Project "C:\github\roguelike\roguelike\roguelike.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.03
+Time Elapsed 00:00:03.06

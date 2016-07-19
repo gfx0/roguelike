@@ -1,13 +1,22 @@
-﻿Build started 28.6.2016 18.10.11.
+﻿Build started 20.7.2016 1.47.48.
      1>Project "C:\github\roguelike\roguelike\roguelike.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /I"C:\cpplibs\SDL2_ttf-2.0.14\include" /I"C:\cpplibs\SDL2_image-2.0.1\include" /I"C:\cpplibs\SDL2-2.0.4\include" /I"C:\Program Files (x86)\Visual Leak Detector\include" /ZI /nologo /W3 /WX- /sdl /Od /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"x64\Debug\\" /Fd"x64\Debug\vc140.pdb" /Gd /TP /errorReport:prompt main.cpp
-         main.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\github\roguelike\x64\Debug\roguelike.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\cpplibs\SDL2_ttf-2.0.14\lib\x64" /LIBPATH:"C:\cpplibs\SDL2_image-2.0.1\lib\x64" /LIBPATH:"C:\cpplibs\SDL2-2.0.4\lib\x64" /LIBPATH:"C:\Program Files (x86)\Visual Leak Detector\lib\Win64" SDL2_ttf.lib SDL2_image.lib SDL2.lib SDL2main.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\github\roguelike\x64\Debug\roguelike.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\github\roguelike\x64\Debug\roguelike.lib" /MACHINE:X64 x64\Debug\main.obj
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\github\roguelike\x64\Debug\roguelike.exe" /INCREMENTAL /NOLOGO /LIBPATH:"C:\github\roguelike\\cpplibs\SDL2_ttf-2.0.14\lib\x64" /LIBPATH:"C:\github\roguelike\\cpplibs\SDL2_image-2.0.1\lib\x64" /LIBPATH:"C:\github\roguelike\\cpplibs\SDL2-2.0.4\lib\x64" /LIBPATH:"C:\Program Files (x86)\Visual Leak Detector\lib\Win64" SDL2_ttf.lib SDL2_image.lib SDL2.lib SDL2main.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\github\roguelike\x64\Debug\roguelike.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\github\roguelike\x64\Debug\roguelike.lib" /MACHINE:X64 x64\Debug\FontLoader.obj
+         x64\Debug\Game.obj
+         x64\Debug\EngineComponentBase.obj
+         x64\Debug\EngineComponentManager.obj
+         x64\Debug\GameStateBase.obj
+         x64\Debug\ImageLoader.obj
+         x64\Debug\InputManager.obj
+         x64\Debug\main.obj
+         x64\Debug\InitGameState.obj
+         x64\Debug\OperatingSystem.obj
+         x64\Debug\PlayGameState.obj
+         x64\Debug\RenderingSystem.obj
+         x64\Debug\StateMachine.obj
          roguelike.vcxproj -> C:\github\roguelike\x64\Debug\roguelike.exe
      1>Done Building Project "C:\github\roguelike\roguelike\roguelike.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:01.35
+Time Elapsed 00:00:00.36
