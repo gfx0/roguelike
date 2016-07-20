@@ -47,7 +47,8 @@ private:
 
 	class StateMachine *			mpStateMachine;
 	class EngineComponentManager *	mpEngineComponentManager;
-	class InputManager *			mpInputManager;
+	
+	//TODO: mpInputManager?
 
 };
 

@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <cassert>
 
+#include <SDL.h> //for SDL_Event input handling
 
 /*****************************************************************************
 
@@ -56,4 +57,9 @@ void StateMachine::ListLoadedStates()
 void StateMachine::CurrentStateOnUpdate()
 {
 	mpCurrentState->second->OnUpdate();
+}
+
+void StateMachine::CurrentStateOnInput(SDL_Event & pEvent)
+{
+	mpCurrentState->second->OnInput(pEvent);
 }

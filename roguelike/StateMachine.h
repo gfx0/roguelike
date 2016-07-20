@@ -5,6 +5,8 @@
 
 #include <unordered_map>
 
+union SDL_Event;
+
 class StateMachine
 {
 public:
@@ -13,6 +15,7 @@ public:
 
 	void TransitionTo(char* stateName);
 	void CurrentStateOnUpdate();
+	void CurrentStateOnInput(SDL_Event & pEvent);
 	void ListLoadedStates();
 
 	template<class T>

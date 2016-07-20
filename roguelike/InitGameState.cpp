@@ -7,7 +7,6 @@
 #include "FontLoader.h"
 #include "OperatingSystem.h"
 
-//#include <windows.h>
 #include <time.h> //srand
 
 #include <stdio.h>
@@ -18,8 +17,7 @@
 
 #include "sdlhelpers.h"
 
-//NOTE: These square tiles won't scale with 16:9 etc.
-const int TILE_SIZE = 40;
+#pragma optimize("", off)
 
 /*************************************************************
 *
@@ -30,8 +28,7 @@ const int TILE_SIZE = 40;
 *
 *************************************************************/
 InitGameState::InitGameState()
-	: mIsNewGameLoading(false)
-	, mIsNewGameSessionInitialized(false)
+	: mIsNewGameLoading(true)
 	, mpRenderingSystem(NULL)
 	, mpFontLoader(NULL)
 	, mpImageLoader(NULL)
@@ -46,97 +43,18 @@ InitGameState::~InitGameState()
 
 void InitGameState::OnEnter()
 {
-	//
-	//	NOTE: Game engine currently gets stuck here since input is not yet created into its own system
-	//
-	//	TODO:	Create InputManager ?
-	//
-	//			States should have some kind of OnInput ( InputEvent ) so SDL Input Events can be handled non blockingly
-	//			without the stupid while loop this HackySDLGameStart does!
-	//
-	HackySDLGameStart();
+	mIsNewGameLoading = true;
 
-	/*
-	mIsNewGameSessionInitialized = false;
-	mIsNewGameLoading = false;
-	mpRenderingSystem = Game::GetGame()->GetGameComponentManager()->GetComponent<RenderingSystem>("OldRenderingSystem");
-	mpPlayerManager = Game::GetGame()->GetGameComponentManager()->GetComponent<PlayerManager>("PlayerManager");
-	mpSpriteManager = Game::GetGame()->GetGameComponentManager()->GetComponent<SpriteManager>("SpriteManager");
-	mpEnemyManager = Game::GetGame()->GetGameComponentManager()->GetComponent<EnemyManager>("EnemyManager");
-	mpProjectileManager = Game::GetGame()->GetGameComponentManager()->GetComponent<ProjectileManager>("ProjectileManager");
+	/****************************************************************************************************************
 
-	mpPlayerManager->GetPlayer(0)->SetX(SETTINGS_PLAYER_START_X);
-	mpPlayerManager->GetPlayer(0)->SetY(SETTINGS_PLAYER_START_Y);
+	__          ______  _____  _  __  _____ _   _   _____  _____   ____   _____ _____  ______  _____ _____ 
+	\ \        / / __ \|  __ \| |/ / |_   _| \ | | |  __ \|  __ \ / __ \ / ____|  __ \|  ____|/ ____/ ____|
+	 \ \  /\  / / |  | | |__) | ' /    | | |  \| | | |__) | |__) | |  | | |  __| |__) | |__  | (___| (___  
+	  \ \/  \/ /| |  | |  _  /|  <     | | | . ` | |  ___/|  _  /| |  | | | |_ |  _  /|  __|  \___ \\___ \ 
+	   \  /\  / | |__| | | \ \| . \   _| |_| |\  | | |    | | \ \| |__| | |__| | | \ \| |____ ____) |___) |
+	    \/  \/   \____/|_|  \_\_|\_\ |_____|_| \_| |_|    |_|  \_\\____/ \_____|_|  \_\______|_____/_____/ 
 
-	//NOTE: OLD! (2013)
-	if (!mpRenderingSystem->IsInitialized())
-	{
-		mpRenderingSystem->InitWindow(SETTINGS_SCREEN_WIDTH, SETTINGS_SCREEN_HEIGHT);
-		mpSpriteManager->LoadSprite("data/player.bmp");
-		mpSpriteManager->LoadSprite("data/enemy1.bmp");
-		mpSpriteManager->LoadSprite("data/enemy2.bmp");
-		mpSpriteManager->LoadSprite("data/rocket.bmp");
-		mpSpriteManager->LoadSprite("data/bomb.bmp");
-	}
-
-	//If player either lost the game or the game is being initialized, give him some health.
-	if (mpPlayerManager->GetPlayer(0)->GetHealth() <= 0)
-		mpPlayerManager->GetPlayer(0)->SetHealth(SETTINGS_PLAYER_MAX_HEALTH);
-
-	//Used when the player gets hit, temporary invulnerability :)
-	mpPlayerManager->GetPlayer(0)->SetIsInvulnerable(false);
-
-	//If any enemies from the previous session are alive, kill them now : o )
-	mpEnemyManager->KillAllEnemies();
-	mpProjectileManager->DestroyAllProjectiles();
-
-	srand(time(NULL));
-
-	mIsNewGameSessionInitialized = true;
-	*/
-}
-
-void InitGameState::OnExit()
-{
-	//delete mpRenderingSystem; ?
-}
-
-void InitGameState::OnUpdate()
-{
-	/*
-	if (mIsNewGameSessionInitialized && !mIsNewGameLoading)
-	{
-		mIsNewGameLoading = true;
-		LoadNewLevelAndStartGame();
-	}
-
-	mpRenderingSystem->DrawSomeText(240, 200, "Loading new game..."); ?
-	*/
-}
-
-void InitGameState::LoadNewLevelAndStartGame()
-{
-	/*
-	if (!mpPlayerManager->GetPlayer(0)->GetIsSpriteSet())
-		mpPlayerManager->GetPlayer(0)->SetSprite(mpSpriteManager->GetSprite("data/player.bmp"));
-
-	//TODO: Load enemies and set their positions, they are the 'level'.
-	//TODO: Load enemy positions from a file, create a level manager for this.
-	int numberOfAlienRows = (rand() % SETTINGS_MAX_ROWS_OF_ALIENS) + SETTINGS_MIN_ROWS_OF_ALIENS;
-	for (int columnIndex = 0; columnIndex < (SETTINGS_SCREEN_WIDTH / SETTINGS_SPRITE_WIDTH) - 2; columnIndex++)
-		for (int rowIndex = 0; rowIndex < numberOfAlienRows; rowIndex++)
-			if (rand() % 2 == 1)
-				mpEnemyManager->CreateEnemyAtPosition(SETTINGS_SPRITE_WIDTH + columnIndex*SETTINGS_SPRITE_WIDTH,
-					rowIndex*SETTINGS_SPRITE_HEIGHT,
-					rand() % 2 == 1 ? EnemyManager::ENEMY_GREEN_ALIEN : EnemyManager::ENEMY_RED_ALIEN);
-
-
-	Game::GetGame()->GetStateMachine()->TransitionTo("StartTheGame");
-	*/
-}
-
-void InitGameState::HackySDLGameStart()
-{
+	 ****************************************************************************************************************/
 
 	/****************************************************
 	*
@@ -204,20 +122,12 @@ void InitGameState::HackySDLGameStart()
 		Game::GetGame()->Shutdown("Could not load font :(\n");
 
 	SDL_Color color = { 255, 255, 255, 255 };
-	SDL_Texture *statusBarImageFontTexture = mpFontLoader->RenderText("Level: 1 Int: 1 Str: 1 Dex: 1", FontLoader::FONT_SAMPLE, color, 32, mpRenderingSystem->GetRenderer());
-	if (statusBarImageFontTexture == nullptr)
+	mpStatusBarImageFontTexture = mpFontLoader->RenderText("Level: 1 Int: 1 Str: 1 Dex: 1", FontLoader::FONT_SAMPLE, color, 32, mpRenderingSystem->GetRenderer());
+	if (mpStatusBarImageFontTexture == nullptr)
 	{
 		Game::GetGame()->Shutdown("Failed to create a font text texture for showing the testing text of this demo..\n");
 		return;
 	}
-
-	//Get the texture w/h so we can center it in the screen
-	int iTextW, iTextH;
-	SDL_QueryTexture(statusBarImageFontTexture, NULL, NULL, &iTextW, &iTextH);
-	int xText = 0;//SCREEN_WIDTH / 2 - iTextW / 2;
-	int yText = 0;// SCREEN_HEIGHT / 2 - iTextH / 2;
-
-
 
 	/**************************
 	 * Texture loading
@@ -232,177 +142,183 @@ void InitGameState::HackySDLGameStart()
 	sprintf(spriteSheetTestPath, "%sgfx\\testspritesheet.png", resourceBasePath);
 
 	//TODO: Pool these texture pointers into the image loader / image manager instead of keeping them on stack like this.
-	SDL_Texture *background =		mpImageLoader->LoadTexture(grassTileImagePath,	mpRenderingSystem->GetRenderer());
-	SDL_Texture *wallTileTexture =	mpImageLoader->LoadTexture(wallTileImagePath,	mpRenderingSystem->GetRenderer());
-	SDL_Texture *playerSprite =		mpImageLoader->LoadTexture(foregroundImagePath, mpRenderingSystem->GetRenderer());
-	SDL_Texture *testSpriteSheet =	mpImageLoader->LoadTexture(spriteSheetTestPath, mpRenderingSystem->GetRenderer());
+	mpBackground		= mpImageLoader->LoadTexture(grassTileImagePath, mpRenderingSystem->GetRenderer());
+	mpWallTileTexture	= mpImageLoader->LoadTexture(wallTileImagePath,	mpRenderingSystem->GetRenderer());
+	mpPlayerSprite		= mpImageLoader->LoadTexture(foregroundImagePath, mpRenderingSystem->GetRenderer());
+	mpTestSpriteSheet	= mpImageLoader->LoadTexture(spriteSheetTestPath, mpRenderingSystem->GetRenderer());
 
-	if (background == NULL || playerSprite == NULL || wallTileTexture == NULL || testSpriteSheet == NULL) {
-		cleanup(testSpriteSheet);
-		cleanup(wallTileTexture);
-		cleanup(background);
-		cleanup(playerSprite);
+	if (mpBackground == NULL || mpPlayerSprite == NULL || mpWallTileTexture == NULL || mpTestSpriteSheet == NULL) {
+		cleanup(mpTestSpriteSheet);
+		cleanup(mpWallTileTexture);
+		cleanup(mpBackground);
+		cleanup(mpPlayerSprite);
 		Game::GetGame()->Shutdown("Could not load one or more of the necessary textures :( shutting down...\n");
 		return;
 	}
 
 	mpRenderingSystem->Clear();
 
-	int windowWidth = mpRenderingSystem->GetWindowWidth();
-	int windowHeight = mpRenderingSystem->GetWindowHeight();
+	mCachedWindowWidth	= mpRenderingSystem->GetWindowWidth();
+	mCachedWindowHeight = mpRenderingSystem->GetWindowHeight();
 
-	/**************************
-	* Player Position & Size
-	**************************/
-	int xTiles = windowWidth / TILE_SIZE;
-	int yTiles = windowHeight / TILE_SIZE;
+	mCachedWindowWidthHalf = mCachedWindowWidth / 2;
+	mCachedWindowHeightHalf = mCachedWindowHeight / 2;
+	/**********************************
+	* Player Position (center screen)
+	**********************************/
+	mPlayerTempX = mCachedWindowWidth / 2;
+	mPlayerTempY = mCachedWindowHeight / 2;
 
-	int iW, iH;
-	SDL_QueryTexture(playerSprite, NULL, NULL, &iW, &iH);
-	int x = windowWidth / 2 - iW / 2;
-	int y = windowHeight / 2 - iH / 2;
+	mIsNewGameLoading = false;
 
-	/**************************
-	* Sprite Sheet Pos ^ Size
-	**************************/
-	//iW and iH are the clip width and height
-	//We'll be drawing only clips so get a center position for the w/h of a clip
-	int iiW = 100, iiH = 100;
-	int xx = windowWidth / 2 - iiW / 2;
-	int yy = windowHeight / 2 - iiH / 2;
+	/****************************************************************************************************************
 
-	//Setup the clips for our image
-	SDL_Rect clips[4];
-	for (int i = 0; i < 4; ++i) {
-		clips[i].x = i / 2 * iiW;
-		clips[i].y = i % 2 * iiH;
-		clips[i].w = iiW;
-		clips[i].h = iiH;
-	}
-	//Specify a default clip to start with
-	int useClip = 0;
+	__          ______  _____  _  __  _____ _   _   _____  _____   ____   _____ _____  ______  _____ _____ 
+	\ \        / / __ \|  __ \| |/ / |_   _| \ | | |  __ \|  __ \ / __ \ / ____|  __ \|  ____|/ ____/ ____|
+	 \ \  /\  / / |  | | |__) | ' /    | | |  \| | | |__) | |__) | |  | | |  __| |__) | |__  | (___| (___  
+	  \ \/  \/ /| |  | |  _  /|  <     | | | . ` | |  ___/|  _  /| |  | | | |_ |  _  /|  __|  \___ \\___ \ 
+	   \  /\  / | |__| | | \ \| . \   _| |_| |\  | | |    | | \ \| |__| | |__| | | \ \| |____ ____) |___) |
+	    \/  \/   \____/|_|  \_\_|\_\ |_____|_| \_| |_|    |_|  \_\\____/ \_____|_|  \_\______|_____/_____/ 
 
+	 ****************************************************************************************************************/
+}
 
-	//TODO: This needs to be non blocking.
-	//
-	//		No while loops inside of the OnUpdate()
-	//
-	//		OnUpdate should simply ask the renderer to render.... objects?
-	//
-	//				 (SDL_PollEvent)
-	//		OnInput(    InputEvent   ) should handle input coming to the state.
-	//
-	//								Perhaps oninput could modify the states(positions) of these temp objects?
-	//
-	//								These state objects would be the player etc. in member variables of the state?
-	//								
-	//								Perhaps better in their own CharacterManager? hmm test it out.
-	//
-	//
+void InitGameState::OnExit()
+{
+	delete mpRenderingSystem;
+}
 
+void InitGameState::OnUpdate()
+{
+	/**********************************
+	 * Still loading sprites etc?
+	 **********************************/
+	if ( mIsNewGameLoading )
+		return;
 
-	/**************************
-	* SDL Events Loop
-	**************************/
-	SDL_Event e;
-	bool quit = false;
-	while (!quit)
+	//Render the scene
+	mpRenderingSystem->Clear();
+	//Draw the tiles by calculating their positions
+	/**************************************************************************
+	 *
+	 *	TODO:	Make a level loader?
+	 *			First it can just load 
+	 *			ascii file like this:
+	 *
+	 *
+	 *			Example of basic level?
+	 *
+	 *			#####################
+	 *			#					#
+	 *			#				#	#
+	 *			#				#	#
+	 *			########	####	#
+	 *			#	   #	#		#
+	 *			#	#  #	#		#
+	 *			#	#		#		#
+	 *			#####################
+	 *
+	 *	TODO:	Make a level editor?
+	 *
+	 *			1. Mouse click switches tile
+	 *
+	 *			1. Hover highlights editable tile
+	 *
+	 *			Escape saves the file?
+	 *
+	 *			Very simple!
+	 *			
+	 **************************************************************************/
+	mpRenderingSystem->RenderTexture(mpPlayerSprite, mPlayerTempX, mPlayerTempY);
+	mpRenderingSystem->RenderTexture(mpStatusBarImageFontTexture, 0, 0);//left top
+	mpRenderingSystem->RenderTexture(mpWallTileTexture, mCachedWindowWidthHalf, mCachedWindowHeightHalf);
+	mpRenderingSystem->Render();
+}
+
+void InitGameState::OnInput(SDL_Event & pEvent)
+{
+	//if ( !pEvent )
+		//return;
+
+	//if ( pEvent == NULL )
+	//	return;
+
+	if (pEvent.type == SDL_QUIT)
 	{
-		while (SDL_PollEvent(&e))
-		{
-			if (e.type == SDL_QUIT)
-			{
-				quit = true;
-			}
-			if (e.type == SDL_KEYDOWN)
-			{
-				switch (e.key.keysym.sym)
-				{
-				case SDLK_LEFT:
-					x -= 40;
-					break;
-				case SDLK_RIGHT:
-					x += 40;
-					break;
-				case SDLK_UP:
-					y -= 40;
-					break;
-				case SDLK_DOWN:
-					y += 40;
-					break;
-				case SDLK_1:
-					useClip = 0;
-					break;
-				case SDLK_2:
-					useClip = 1;
-					break;
-				case SDLK_3:
-					useClip = 2;
-					break;
-				case SDLK_4:
-					useClip = 3;
-					break;
-				case SDLK_ESCAPE:
-					quit = true;
-					break;
-				default:
-					break;
-				}
-			}
-			if (e.type == SDL_MOUSEBUTTONDOWN)
-			{
-				quit = true;
-			}
-		}
-		//Render the scene
-		mpRenderingSystem->Clear();
-		//Draw the tiles by calculating their positions
-		/**********************************
-		 *
-		 *	TODO:	Make a level loader?
-		 *			First it can just load 
-		 *			ascii file like this:
-		 *
-		 *
-		 *			Example of basic level?
-		 *
-		 *			#####################
-		 *			#					#
-		 *			#				#	#
-		 *			#				#	#
-		 *			########	####	#
-		 *			#	   #	#		#
-		 *			#	#  #	#		#
-		 *			#	#		#		#
-		 *			#####################
-		 *
-		 *	TODO:	Make a level editor?
-		 *
-		 *			1. Mouse click switches tile
-		 *
-		 *			1. Hover highlights editable tile
-		 *
-		 *			Escape saves the file?
-		 *
-		 *			Very simple!
-		 *			
-		 **********************************/
-		for (int i = 0; i < xTiles * yTiles; ++i) {
-			int x = i % xTiles;
-			int y = i / xTiles;
-			//mpRenderingSystem->RenderTexture(background, x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
-		}
-		//renderTexture(testSpriteSheet, renderer, xx, yy, &clips[useClip]);
-		mpRenderingSystem->RenderTexture(wallTileTexture, windowWidth / 2, windowHeight / 2);
-		mpRenderingSystem->RenderTexture(playerSprite, x, y);
-		mpRenderingSystem->RenderTexture(statusBarImageFontTexture, xText, yText);
-		mpRenderingSystem->Render();
+		HackyQuit();
+		return;
 	}
+	if (pEvent.type == SDL_KEYDOWN)
+	{
+		switch (pEvent.key.keysym.sym)
+		{
+		case SDLK_LEFT:
+			mPlayerTempX -= 40;
+			break;
+		case SDLK_RIGHT:
+			mPlayerTempX += 40;
+			break;
+		case SDLK_UP:
+			mPlayerTempY -= 40;
+			break;
+		case SDLK_DOWN:
+			mPlayerTempY += 40;
+			break;
+		case SDLK_1:
+			break;
+		case SDLK_2:
+			break;
+		case SDLK_3:
+			break;
+		case SDLK_4:
+			break;
+		case SDLK_ESCAPE:
+			HackyQuit();
+			break;
+		default:
+			break;
+		}
+	}
+	if (pEvent.type == SDL_MOUSEBUTTONDOWN)
+	{
+		HackyQuit();
+		return;
+	}
+}
 
-	cleanup(wallTileTexture);
-	cleanup(testSpriteSheet);
-	cleanup(playerSprite);
-	cleanup(background);
-	Game::GetGame()->Shutdown();
-	return;
+//NOTE: Game should shutdown nicely via OnExit, but for this demo purpose this should be fine.
+void InitGameState::HackyQuit()
+{
+	if ( mpWallTileTexture )
+		cleanup(mpWallTileTexture);
+	if ( mpTestSpriteSheet )
+		cleanup(mpTestSpriteSheet);
+	if ( mpPlayerSprite )
+		cleanup(mpPlayerSprite);
+	if ( mpBackground )
+		cleanup(mpBackground);
+
+	Game::GetGame()->Shutdown("Hacky quit shutdown!");
+}
+
+
+void InitGameState::LoadNewLevelAndStartGame()
+{
+	/*
+	if (!mpPlayerManager->GetPlayer(0)->GetIsSpriteSet())
+		mpPlayerManager->GetPlayer(0)->SetSprite(mpSpriteManager->GetSprite("data/player.bmp"));
+
+	//TODO: Load enemies and set their positions, they are the 'level'.
+	//TODO: Load enemy positions from a file, create a level manager for this.
+	int numberOfAlienRows = (rand() % SETTINGS_MAX_ROWS_OF_ALIENS) + SETTINGS_MIN_ROWS_OF_ALIENS;
+	for (int columnIndex = 0; columnIndex < (SETTINGS_SCREEN_WIDTH / SETTINGS_SPRITE_WIDTH) - 2; columnIndex++)
+		for (int rowIndex = 0; rowIndex < numberOfAlienRows; rowIndex++)
+			if (rand() % 2 == 1)
+				mpEnemyManager->CreateEnemyAtPosition(SETTINGS_SPRITE_WIDTH + columnIndex*SETTINGS_SPRITE_WIDTH,
+					rowIndex*SETTINGS_SPRITE_HEIGHT,
+					rand() % 2 == 1 ? EnemyManager::ENEMY_GREEN_ALIEN : EnemyManager::ENEMY_RED_ALIEN);
+
+
+	Game::GetGame()->GetStateMachine()->TransitionTo("StartTheGame");
+	*/
 }

@@ -49,20 +49,8 @@ Game::~Game()
 
 Game* Game::GetGame()
 {
-	/*
-	
-	Singleton pattern enforcement, I think this is not useful, todo: remove.
-
-	if (!instanceOfGameExists)
-	{
-		instanceOfGameExists = true;
-		pGame = new Game();
-		return pGame;
-	}
-	else
-	*/
+	assert(pGame);
 	return pGame;
-
 }
 
 void Game::Start()
@@ -72,7 +60,7 @@ void Game::Start()
 	/*************************************************************************
 	 *	Load Game States
 	 *************************************************************************/
-	mpStateMachine->LoadState<InitGameState>("InitializeTheGame");
+	mpStateMachine->LoadState<InitGameState>("InitGameState");
 	mpStateMachine->LoadState<PlayGameState>("PlayGameState");
 
 	/*************************************************************************
@@ -98,7 +86,7 @@ void Game::Start()
 	mIsRunning = true;
 	mIsInitializing = false;
 
-	mpStateMachine->TransitionTo("InitializeTheGame");
+	mpStateMachine->TransitionTo("InitGameState");
 
 }
 
@@ -115,11 +103,16 @@ void Game::Update()
 
 	//Poll for input
 
-	//Update all game components
+	//Update all game components, at the moment this also renders.
 	mpEngineComponentManager->Update();
 
 	//Update current game state
 	mpStateMachine->CurrentStateOnUpdate();
+
+	//Is there any input event in queue? If so, pass it on.
+	SDL_Event mpSDLEventInQueue;
+	if ( SDL_PollEvent(&mpSDLEventInQueue) == 1 ) //Returns 1 if event is pending.
+		mpStateMachine->CurrentStateOnInput(mpSDLEventInQueue);
 
 	//Render here or in state?
 	//mpRenderingSystem->render();
@@ -130,7 +123,7 @@ void Game::Shutdown( char * reasonForShutdown )
 {
 
 	if ( reasonForShutdown != nullptr )
-		printf(reasonForShutdown);
+		SDL_Log("\n\n\nSHUTDOWN -> REASON: %s\n\n\n", reasonForShutdown);
 
 	mpEngineComponentManager->DeInitializeAllComponents();
 

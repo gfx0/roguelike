@@ -140,7 +140,7 @@ int RenderingSystem::CreateWindow(int x, int y, int w, int h)
 	**************************/
 	mpWindow = SDL_CreateWindow("Roguelike", x, y, w, h, SDL_WINDOW_SHOWN);
 	if (mpWindow == nullptr) {
-		printf("CreateWindow error: %s\n", SDL_GetError());
+		SDL_Log("CreateWindow error: %s\n", SDL_GetError());
 		return 2;
 	}
 
@@ -149,7 +149,7 @@ int RenderingSystem::CreateWindow(int x, int y, int w, int h)
 	**************************/
 	mpRenderer = SDL_CreateRenderer(mpWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (mpRenderer == nullptr) {
-		printf("CreateRenderer error: %s\n", SDL_GetError());
+		SDL_Log("CreateRenderer error: %s\n", SDL_GetError());
 		SDL_DestroyWindow(mpWindow);
 		return 3;
 	}

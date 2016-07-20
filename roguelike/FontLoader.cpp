@@ -29,7 +29,7 @@ bool FontLoader::Start()
 {
 	if ( TTF_Init() != 0 )
 	{
-		printf("TTF_Init: %s\n", SDL_GetError());
+		SDL_Log("TTF_Init: %s\n", SDL_GetError());
 		return false;
 	}
 	return true;
@@ -66,13 +66,13 @@ SDL_Texture * FontLoader::RenderText(char * message, fonts fontToUse, SDL_Color 
 	SDL_Surface *surf = TTF_RenderText_Blended(mFont, message, color);
 	if (surf == nullptr) {
 		TTF_CloseFont(mFont);
-		printf("TTF_RenderText %s\n", SDL_GetError());
+		SDL_Log("TTF_RenderText %s\n", SDL_GetError());
 		return nullptr;
 	}
 
 	SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surf);
 	if (texture == nullptr) {
-		printf("CreateTexture %s\n", SDL_GetError());
+		SDL_Log("CreateTexture %s\n", SDL_GetError());
 	}
 
 	SDL_FreeSurface(surf);
@@ -90,7 +90,7 @@ bool FontLoader::LoadFont(const char * fullFontFilePath, int fontSize)
 
 	mFont = TTF_OpenFont(fullFontFilePath, fontSize);
 	if (mFont == nullptr) {
-		printf("TTF_OpenFont error: %s\n", SDL_GetError());
+		SDL_Log("TTF_OpenFont error: %s\n", SDL_GetError());
 		return false;
 	}
 	return true;

@@ -28,7 +28,7 @@ bool ImageLoader::Start()
 {
 	if ( (IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG) != IMG_INIT_PNG )
 	{
-		printf("SDL_Image IMG_Init error: %s\n", SDL_GetError());
+		SDL_Log("SDL_Image IMG_Init error: %s\n", SDL_GetError());
 		return false;
 	}
 	return true;
@@ -56,7 +56,7 @@ SDL_Texture* ImageLoader::LoadTexture(char * filePath, SDL_Renderer *ren)
 {
 	SDL_Texture *texture = IMG_LoadTexture(ren, filePath);
 	if (texture == nullptr) {
-		printf("LoadTexture error: %s\n", SDL_GetError());
+		SDL_Log("LoadTexture error: %s\n", SDL_GetError());
 	}
 	return texture;
 }

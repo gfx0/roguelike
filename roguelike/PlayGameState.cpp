@@ -108,6 +108,11 @@ void PlayGameState::OnUpdate()
 	*/
 }
 
+void PlayGameState::OnInput(SDL_Event & pEvent)
+{
+
+}
+
 void PlayGameState::LoadNewLevelAndStartGame()
 {
 	/*

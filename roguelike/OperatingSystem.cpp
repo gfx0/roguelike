@@ -24,7 +24,7 @@ bool OperatingSystem::Start()
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 	{
-		printf("SDL_Init error: %s\n", SDL_GetError());
+		SDL_Log("SDL_Init error: %s\n", SDL_GetError());
 		return false;
 	}
 	return true;

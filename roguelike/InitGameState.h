@@ -3,6 +3,9 @@
 
 #include "GameStateBase.h"
 
+//forward declarations.
+struct SDL_Texture;
+
 class InitGameState : public GameStateBase
 {
 public:
@@ -12,29 +15,39 @@ public:
 	virtual void OnEnter();
 	virtual void OnExit();
 	virtual void OnUpdate();
-
-	void HackySDLGameStart();
+	virtual void OnInput(SDL_Event&);
 
 	void LoadNewLevelAndStartGame();
+	void HackyQuit();
 
 protected:
 private:
 
+	//This will be false until assets etc. have been loaded.
 	bool mIsNewGameLoading;
-	bool mIsNewGameSessionInitialized;
 
 	class RenderingSystem * mpRenderingSystem;
-	class ImageLoader * mpImageLoader;
-	class FontLoader * mpFontLoader;
+	class ImageLoader *		mpImageLoader;
+	class FontLoader *		mpFontLoader;
 	class OperatingSystem * mpOperatingSystem;
-	/*
-	class RenderingSystem *			mpOldRenderingSystem;
-	class PlayerManager *		mpPlayerManager;
-	class SpriteManager *		mpSpriteManager;
-	class EnemyManager *		mpEnemyManager;
-	class ProjectileManager *	mpProjectileManager;
-	*/
 
+	//NOTE: For now these sprites are stupidly here, later on in spritemanager / in their 
+	//		own CharacterManager / Character classes.
+	SDL_Texture * mpBackground;
+	SDL_Texture * mpWallTileTexture;
+	SDL_Texture * mpPlayerSprite;
+	SDL_Texture * mpTestSpriteSheet;
+	SDL_Texture * mpStatusBarImageFontTexture;
+
+	/**********************************
+	 * Temporary "demo" player action.
+	 **********************************/
+	int mPlayerTempX;
+	int mPlayerTempY;
+	int mCachedWindowWidth;
+	int mCachedWindowHeight;
+	int mCachedWindowHeightHalf;
+	int mCachedWindowWidthHalf;
 };
 
 #endif // InitGameState_h__
