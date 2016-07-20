@@ -17,8 +17,6 @@
 
 #include "sdlhelpers.h"
 
-#pragma optimize("", off)
-
 /*************************************************************
 *
 * This game state initializes a new game for the player.
@@ -108,7 +106,15 @@ void InitGameState::OnEnter()
 	mpImageLoader = Game::GetGame()->GetEngineComponent<ImageLoader>("ImageLoader");
 	mpFontLoader = Game::GetGame()->GetEngineComponent<FontLoader>("FontLoader");
 
-	if ( mpRenderingSystem->CreateWindow(100, 100, 1280, 720) != 0 )
+	WindowCreationInfo info;
+	info.x = SDL_WINDOWPOS_CENTERED;
+	info.y = SDL_WINDOWPOS_CENTERED;
+	info.w = 800; // GetSystemMetrics(SM_CXSCREEN);
+	info.h = 600; // GetSystemMetrics(SM_CYSCREEN);
+	info.borderless = true;
+	info.fullscreen = false;
+
+	if ( mpRenderingSystem->CreateWindow(info) != 0 )
 		return Game::GetGame()->Shutdown("Could not create a window, shutting down...\n");
 
 
