@@ -7,6 +7,21 @@ struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
 
+struct WindowCreationInfo
+{
+	WindowCreationInfo()
+		: borderless(false)
+		, fullscreen(false)
+	{}
+
+	int x;
+	int y; 
+	int w; 
+	int h; 
+	bool borderless;
+	bool fullscreen;
+};
+
 class RenderingSystem : public EngineComponentBase
 {
 public:
@@ -25,7 +40,7 @@ public:
 	void RenderTexture(SDL_Texture * tex, SDL_Rect dst, SDL_Rect * clip);
 	void RenderTexture(SDL_Texture * tex, int x, int y, SDL_Rect * clip);
 
-	int CreateWindow(int x, int y, int w, int h);
+	int CreateWindow(WindowCreationInfo &info);
 	int GetWindowWidth();
 	int GetWindowHeight();
 	SDL_Window * getWindow();

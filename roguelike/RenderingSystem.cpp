@@ -132,13 +132,14 @@ void RenderingSystem::RenderTexture(SDL_Texture *tex, int x, int y,	SDL_Rect *cl
 	RenderTexture(tex, dst, clip);
 }
 
-int RenderingSystem::CreateWindow(int x, int y, int w, int h)
+int RenderingSystem::CreateWindow(WindowCreationInfo &info)
 {
-
 	/**************************
 	* Initialize Window
 	**************************/
-	mpWindow = SDL_CreateWindow("Roguelike", x, y, w, h, SDL_WINDOW_SHOWN);
+	int fullscreenFlag = info.fullscreen ? SDL_WINDOW_FULLSCREEN : 0;
+	int borderFlag = info.borderless ? SDL_WINDOW_BORDERLESS : 0;
+	mpWindow = SDL_CreateWindow("Roguelike", info.x, info.y, info.w, info.h, SDL_WINDOW_SHOWN | borderFlag | fullscreenFlag);
 	if (mpWindow == nullptr) {
 		printf("CreateWindow error: %s\n", SDL_GetError());
 		return 2;
