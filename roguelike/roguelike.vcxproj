@@ -40,13 +40,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -135,6 +135,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="InitGameState.cpp" />
+    <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="OperatingSystem.cpp" />
     <ClCompile Include="PlayGameState.cpp" />
     <ClCompile Include="RenderingSystem.cpp" />
@@ -149,10 +150,10 @@
     <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="InitGameState.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="OperatingSystem.h" />
     <ClInclude Include="PlayGameState.h" />
     <ClInclude Include="RenderingSystem.h" />
-    <ClInclude Include="sdlhelpers.h" />
     <ClInclude Include="settings.h" />
     <ClInclude Include="StateMachine.h" />
   </ItemGroup>

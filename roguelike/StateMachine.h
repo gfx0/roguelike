@@ -13,9 +13,10 @@ public:
 	StateMachine();
 	~StateMachine();
 
-	void TransitionTo(char* stateName);
+	void TransitionTo(const char* stateName);
 	void CurrentStateOnUpdate();
 	void CurrentStateOnInput(SDL_Event & pEvent);
+	void CurrentStateOnExit();
 	void ListLoadedStates();
 
 	template<class T>

@@ -10,6 +10,7 @@
 
 // Game States
 #include "InitGameState.h"
+#include "MainMenuState.h"
 #include "PlayGameState.h"
 
 // Game Components
@@ -61,6 +62,7 @@ void Game::Start()
 	 *	Load Game States
 	 *************************************************************************/
 	mpStateMachine->LoadState<InitGameState>("InitGameState");
+	mpStateMachine->LoadState<MainMenuState>("MainMenuState");
 	mpStateMachine->LoadState<PlayGameState>("PlayGameState");
 
 	/*************************************************************************
@@ -86,7 +88,9 @@ void Game::Start()
 	mIsRunning = true;
 	mIsInitializing = false;
 
-	mpStateMachine->TransitionTo("InitGameState");
+	//NOTE: Temporarily transitioning straight to MainMenuState until state machine transitions can be fixed.
+	//		There is an issue there with unordered_map which is poorly supported by the visual studio compiler in x64 mode.
+	mpStateMachine->TransitionTo("MainMenuState");
 
 }
 
@@ -121,6 +125,9 @@ void Game::Update()
 
 void Game::Shutdown( char * reasonForShutdown )
 {
+
+	if ( mpStateMachine )
+		mpStateMachine->CurrentStateOnExit();
 
 	if ( reasonForShutdown != nullptr )
 		SDL_Log("\n\n\nSHUTDOWN -> REASON: %s\n\n\n", reasonForShutdown);

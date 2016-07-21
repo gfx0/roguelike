@@ -15,8 +15,6 @@
 #include <SDL_ttf.h>
 #include <assert.h>
 
-#include "sdlhelpers.h"
-
 /*************************************************************
 *
 * This game state initializes a new game for the player.
@@ -30,6 +28,7 @@ InitGameState::InitGameState()
 	, mpRenderingSystem(NULL)
 	, mpFontLoader(NULL)
 	, mpImageLoader(NULL)
+	, mTmeToWaitNotYetDelta(0)
 {
 
 }
@@ -95,12 +94,6 @@ void InitGameState::OnEnter()
 	//				Initialize the game logic
 	//				Transition to the play game state and actually use the initialized assets.
 
-	// TODO:		Get rid of sdlhelpers.h
-	//				Only cleanups remain,
-	//				they should be done in each manager instead of these stack functions.
-
-	// TODO:		Move t
-
 	mpOperatingSystem = Game::GetGame()->GetEngineComponent<OperatingSystem>("OperatingSystem");
 	mpRenderingSystem = Game::GetGame()->GetEngineComponent<RenderingSystem>("RenderingSystem");
 	mpImageLoader = Game::GetGame()->GetEngineComponent<ImageLoader>("ImageLoader");
@@ -109,71 +102,22 @@ void InitGameState::OnEnter()
 	WindowCreationInfo info;
 	info.x = SDL_WINDOWPOS_CENTERED;
 	info.y = SDL_WINDOWPOS_CENTERED;
-	info.w = 800; // GetSystemMetrics(SM_CXSCREEN);
-	info.h = 600; // GetSystemMetrics(SM_CYSCREEN);
+	info.w = 1280; // GetSystemMetrics(SM_CXSCREEN);
+	info.h = 720; // GetSystemMetrics(SM_CYSCREEN);
 	info.borderless = true;
 	info.fullscreen = false;
 
 	if ( mpRenderingSystem->CreateWindow(info) != 0 )
 		return Game::GetGame()->Shutdown("Could not create a window, shutting down...\n");
 
-
-	/**********************************
-	 *	Font loading
-	 **********************************/
 	char *resourceBasePath = mpOperatingSystem->GetBasePath();
-	char fullFilePath[2048] = "";
-	sprintf(fullFilePath, "%sfonts\\sample.ttf", resourceBasePath);
-	if ( !mpFontLoader->LoadFont(fullFilePath, 32) )
-		Game::GetGame()->Shutdown("Could not load font :(\n");
-
-	SDL_Color color = { 255, 255, 255, 255 };
-	mpStatusBarImageFontTexture = mpFontLoader->RenderText("Level: 1 Int: 1 Str: 1 Dex: 1", FontLoader::FONT_SAMPLE, color, 32, mpRenderingSystem->GetRenderer());
-	if (mpStatusBarImageFontTexture == nullptr)
-	{
-		Game::GetGame()->Shutdown("Failed to create a font text texture for showing the testing text of this demo..\n");
-		return;
-	}
-
-	/**************************
-	 * Texture loading
-	 **************************/
-	char grassTileImagePath[1024];
-	sprintf(grassTileImagePath, "%sgfx\\grasstile.png", resourceBasePath);
-	char wallTileImagePath[1024];
-	sprintf(wallTileImagePath, "%sgfx\\walltile.png", resourceBasePath);
-	char foregroundImagePath[1024];
-	sprintf(foregroundImagePath, "%sgfx\\knight.png", resourceBasePath);
-	char spriteSheetTestPath[1024];
-	sprintf(spriteSheetTestPath, "%sgfx\\testspritesheet.png", resourceBasePath);
+	char loadingScreenBackground[1024];
+	sprintf(loadingScreenBackground, "%sgfx\\loadingscreenbackground.png", resourceBasePath);
 
 	//TODO: Pool these texture pointers into the image loader / image manager instead of keeping them on stack like this.
-	mpBackground		= mpImageLoader->LoadTexture(grassTileImagePath, mpRenderingSystem->GetRenderer());
-	mpWallTileTexture	= mpImageLoader->LoadTexture(wallTileImagePath,	mpRenderingSystem->GetRenderer());
-	mpPlayerSprite		= mpImageLoader->LoadTexture(foregroundImagePath, mpRenderingSystem->GetRenderer());
-	mpTestSpriteSheet	= mpImageLoader->LoadTexture(spriteSheetTestPath, mpRenderingSystem->GetRenderer());
-
-	if (mpBackground == NULL || mpPlayerSprite == NULL || mpWallTileTexture == NULL || mpTestSpriteSheet == NULL) {
-		cleanup(mpTestSpriteSheet);
-		cleanup(mpWallTileTexture);
-		cleanup(mpBackground);
-		cleanup(mpPlayerSprite);
-		Game::GetGame()->Shutdown("Could not load one or more of the necessary textures :( shutting down...\n");
-		return;
-	}
+	mpLoadingScreenBackground = mpImageLoader->LoadTexture(loadingScreenBackground, mpRenderingSystem->GetRenderer());
 
 	mpRenderingSystem->Clear();
-
-	mCachedWindowWidth	= mpRenderingSystem->GetWindowWidth();
-	mCachedWindowHeight = mpRenderingSystem->GetWindowHeight();
-
-	mCachedWindowWidthHalf = mCachedWindowWidth / 2;
-	mCachedWindowHeightHalf = mCachedWindowHeight / 2;
-	/**********************************
-	* Player Position (center screen)
-	**********************************/
-	mPlayerTempX = mCachedWindowWidth / 2;
-	mPlayerTempY = mCachedWindowHeight / 2;
 
 	mIsNewGameLoading = false;
 
@@ -191,7 +135,8 @@ void InitGameState::OnEnter()
 
 void InitGameState::OnExit()
 {
-	delete mpRenderingSystem;
+	//TODO: game shutdown kills this atm. this needs work.
+	//delete mpRenderingSystem;
 }
 
 void InitGameState::OnUpdate()
@@ -202,43 +147,21 @@ void InitGameState::OnUpdate()
 	if ( mIsNewGameLoading )
 		return;
 
-	//Render the scene
-	mpRenderingSystem->Clear();
-	//Draw the tiles by calculating their positions
-	/**************************************************************************
-	 *
-	 *	TODO:	Make a level loader?
-	 *			First it can just load 
-	 *			ascii file like this:
-	 *
-	 *
-	 *			Example of basic level?
-	 *
-	 *			#####################
-	 *			#					#
-	 *			#				#	#
-	 *			#				#	#
-	 *			########	####	#
-	 *			#	   #	#		#
-	 *			#	#  #	#		#
-	 *			#	#		#		#
-	 *			#####################
-	 *
-	 *	TODO:	Make a level editor?
-	 *
-	 *			1. Mouse click switches tile
-	 *
-	 *			1. Hover highlights editable tile
-	 *
-	 *			Escape saves the file?
-	 *
-	 *			Very simple!
-	 *			
-	 **************************************************************************/
-	mpRenderingSystem->RenderTexture(mpPlayerSprite, mPlayerTempX, mPlayerTempY);
-	mpRenderingSystem->RenderTexture(mpStatusBarImageFontTexture, 0, 0);//left top
-	mpRenderingSystem->RenderTexture(mpWallTileTexture, mCachedWindowWidthHalf, mCachedWindowHeightHalf);
+	mpRenderingSystem->RenderTexture(mpLoadingScreenBackground, 0, 0);
 	mpRenderingSystem->Render();
+
+
+	/**********************************
+	 * ! ARTIFICIAL TEMP DELAY !
+	 **********************************/
+	SDL_Log("mTmeToWaitNotYetDelta: %d", mTmeToWaitNotYetDelta);
+	//mTmeToWaitNotYetDelta++;
+	//if ( mTmeToWaitNotYetDelta > 50 )
+	{
+		SDL_Log("Doing it once!");
+		SDL_Delay(1000);
+		Game::GetGame()->GetStateMachine()->TransitionTo("MainMenuState");
+	}
 }
 
 void InitGameState::OnInput(SDL_Event & pEvent)
@@ -251,80 +174,18 @@ void InitGameState::OnInput(SDL_Event & pEvent)
 
 	if (pEvent.type == SDL_QUIT)
 	{
-		HackyQuit();
+		Game::GetGame()->Shutdown("Quit pressed during loading screen??");
 		return;
 	}
 	if (pEvent.type == SDL_KEYDOWN)
 	{
 		switch (pEvent.key.keysym.sym)
 		{
-		case SDLK_LEFT:
-			mPlayerTempX -= 40;
-			break;
-		case SDLK_RIGHT:
-			mPlayerTempX += 40;
-			break;
-		case SDLK_UP:
-			mPlayerTempY -= 40;
-			break;
-		case SDLK_DOWN:
-			mPlayerTempY += 40;
-			break;
-		case SDLK_1:
-			break;
-		case SDLK_2:
-			break;
-		case SDLK_3:
-			break;
-		case SDLK_4:
-			break;
 		case SDLK_ESCAPE:
-			HackyQuit();
+			Game::GetGame()->Shutdown("Quit pressed during loading screen??");
 			break;
 		default:
 			break;
 		}
 	}
-	if (pEvent.type == SDL_MOUSEBUTTONDOWN)
-	{
-		HackyQuit();
-		return;
-	}
-}
-
-//NOTE: Game should shutdown nicely via OnExit, but for this demo purpose this should be fine.
-void InitGameState::HackyQuit()
-{
-	if ( mpWallTileTexture )
-		cleanup(mpWallTileTexture);
-	if ( mpTestSpriteSheet )
-		cleanup(mpTestSpriteSheet);
-	if ( mpPlayerSprite )
-		cleanup(mpPlayerSprite);
-	if ( mpBackground )
-		cleanup(mpBackground);
-
-	Game::GetGame()->Shutdown("Hacky quit shutdown!");
-}
-
-
-void InitGameState::LoadNewLevelAndStartGame()
-{
-	/*
-	if (!mpPlayerManager->GetPlayer(0)->GetIsSpriteSet())
-		mpPlayerManager->GetPlayer(0)->SetSprite(mpSpriteManager->GetSprite("data/player.bmp"));
-
-	//TODO: Load enemies and set their positions, they are the 'level'.
-	//TODO: Load enemy positions from a file, create a level manager for this.
-	int numberOfAlienRows = (rand() % SETTINGS_MAX_ROWS_OF_ALIENS) + SETTINGS_MIN_ROWS_OF_ALIENS;
-	for (int columnIndex = 0; columnIndex < (SETTINGS_SCREEN_WIDTH / SETTINGS_SPRITE_WIDTH) - 2; columnIndex++)
-		for (int rowIndex = 0; rowIndex < numberOfAlienRows; rowIndex++)
-			if (rand() % 2 == 1)
-				mpEnemyManager->CreateEnemyAtPosition(SETTINGS_SPRITE_WIDTH + columnIndex*SETTINGS_SPRITE_WIDTH,
-					rowIndex*SETTINGS_SPRITE_HEIGHT,
-					rand() % 2 == 1 ? EnemyManager::ENEMY_GREEN_ALIEN : EnemyManager::ENEMY_RED_ALIEN);
-
-
-	Game::GetGame()->GetStateMachine()->TransitionTo("StartTheGame");
-	*/
 }

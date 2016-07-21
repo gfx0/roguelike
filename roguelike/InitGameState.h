@@ -17,9 +17,6 @@ public:
 	virtual void OnUpdate();
 	virtual void OnInput(SDL_Event&);
 
-	void LoadNewLevelAndStartGame();
-	void HackyQuit();
-
 protected:
 private:
 
@@ -33,7 +30,7 @@ private:
 
 	//NOTE: For now these sprites are stupidly here, later on in spritemanager / in their 
 	//		own CharacterManager / Character classes.
-	SDL_Texture * mpBackground;
+	SDL_Texture * mpLoadingScreenBackground;
 	SDL_Texture * mpWallTileTexture;
 	SDL_Texture * mpPlayerSprite;
 	SDL_Texture * mpTestSpriteSheet;
@@ -48,6 +45,8 @@ private:
 	int mCachedWindowHeight;
 	int mCachedWindowHeightHalf;
 	int mCachedWindowWidthHalf;
+
+	int mTmeToWaitNotYetDelta;
 };
 
 #endif // InitGameState_h__

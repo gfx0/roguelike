@@ -5,6 +5,8 @@
 
 #include <SDL.h> //for SDL_Event input handling
 
+#pragma optimize("", off)
+
 /*****************************************************************************
 
 	Purpose of this is to control the Game logic and avoid game features 
@@ -19,6 +21,9 @@ StateMachine::StateMachine()
 	: mCurrentStateName(NULL)
 {
 	mpGameStateMap = new GameStateMap();
+	mpPreviousState = mpGameStateMap->end();
+	mpCurrentState = mpGameStateMap->end();
+	mpGameStateMap->reserve(3);
 }
 
 StateMachine::~StateMachine()
@@ -26,19 +31,24 @@ StateMachine::~StateMachine()
 	delete mpGameStateMap;
 }
 
-void StateMachine::TransitionTo(char* gameStatePath)
+//TODO: Refactor this piece of junk, the unordered_map support has an internal visual studio bug in vs 2012 x64 bit etc... Horrible shit.
+//		Go for something simpler, slower is fine too, just something that works for now, optimization can be done later.
+void StateMachine::TransitionTo(const char* gameStatePath)
 {
 	//On the very first transition, this will be null on purpose.
 	if (mCurrentStateName != NULL)
 	{
-		mpPreviousState = mpGameStateMap->find(mCurrentStateName);
+		const char * tits = mCurrentStateName;
+		mpPreviousState = mpGameStateMap->find(tits);
 		assert(mpPreviousState != mpGameStateMap->end());
 		mpPreviousState->second->OnExit();
 	}
 
-	mCurrentStateName = gameStatePath;
+	if ( mCurrentStateName == NULL )
+		mCurrentStateName = (char*)malloc(1024 * sizeof(char));
+	sprintf_s(mCurrentStateName, 1024*sizeof(char), "%s", gameStatePath);
 
-	mpCurrentState = mpGameStateMap->find(mCurrentStateName);
+	mpCurrentState = mpGameStateMap->find(gameStatePath);
 	assert(mpCurrentState != mpGameStateMap->end());
 	mpCurrentState->second->OnEnter();
 
@@ -62,4 +72,10 @@ void StateMachine::CurrentStateOnUpdate()
 void StateMachine::CurrentStateOnInput(SDL_Event & pEvent)
 {
 	mpCurrentState->second->OnInput(pEvent);
+}
+
+//Meant to used with engine shutdown for automatic cleanup.
+void StateMachine::CurrentStateOnExit()
+{
+	mpCurrentState->second->OnExit();
 }
