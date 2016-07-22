@@ -241,7 +241,8 @@ void PlayGameState::OnInput(SDL_Event & pEvent)
 	}
 	if (pEvent.type == SDL_MOUSEBUTTONDOWN)
 	{
-		Game::GetGame()->Shutdown("Quit from playgamestate.");
-		return;
+		//Yeah don't shut down, but keep this here as an example of functionality.
+		//Game::GetGame()->Shutdown("Quit from playgamestate.");
+		//return;
 	}
 }
