@@ -1,81 +1,94 @@
 #include "StateMachine.h"
 
 #include <windows.h>
-#include <cassert>
 
 #include <SDL.h> //for SDL_Event input handling
 
-#pragma optimize("", off)
-
 /*****************************************************************************
 
-	Purpose of this is to control the Game logic and avoid game features 
-	creeping into the engine code to bloat it.
+Purpose of this is to control the Game logic and avoid game features
+creeping into the engine code to bloat it.
 
-	Separation of Game and Engine is important, so other games can be made
-	with this same technology base. This component helps make that possible.
+Separation of Game and Engine is important, so other games can be made
+with this same technology base. This component helps make that possible.
 
 *****************************************************************************/
 
 StateMachine::StateMachine()
-	: mCurrentStateName(NULL)
+	: mCurrentGameStateID(0)
 {
-	mpGameStateMap = new GameStateMap();
-	mpPreviousState = mpGameStateMap->end();
-	mpCurrentState = mpGameStateMap->end();
-	mpGameStateMap->reserve(3);
+	mpGameStates.reserve(GAMESTATE_MAX);
+	for ( unsigned int i = 0; i < GAMESTATE_MAX; i++ )
+		mpGameStates.push_back(NULL);
+	mpCurrentState = mpPreviousState = NULL;
 }
 
 StateMachine::~StateMachine()
 {
-	delete mpGameStateMap;
+	//NOTE: This deletes the actual pointers to the new'd gamestate pointer objects.
+	//		Using boost::ptr_vector could be better or other more advanced pointers but thats not the goal here.
+	for (unsigned int i = 0; i < mpGameStates.size(); i++)
+		delete mpGameStates[i];
+
+	mpGameStates.clear();
 }
 
-//TODO: Refactor this piece of junk, the unordered_map support has an internal visual studio bug in vs 2012 x64 bit etc... Horrible shit.
-//		Go for something simpler, slower is fine too, just something that works for now, optimization can be done later.
-void StateMachine::TransitionTo(const char* gameStatePath)
+void StateMachine::TransitionTo(int stateID)
 {
-	//On the very first transition, this will be null on purpose.
-	if (mCurrentStateName != NULL)
+	assert(stateID < mpGameStates.size());
+	assert(mpGameStates[stateID] != NULL);
+
+	mCurrentGameStateID = stateID;
+
+	//First transition can be detected from both state pointers being null.
+	if (mpCurrentState == NULL && mpPreviousState == NULL)
 	{
-		const char * tits = mCurrentStateName;
-		mpPreviousState = mpGameStateMap->find(tits);
-		assert(mpPreviousState != mpGameStateMap->end());
-		mpPreviousState->second->OnExit();
+		mpCurrentState = mpGameStates[stateID];
+		mpCurrentState->OnEnter();
+		return;
 	}
 
-	if ( mCurrentStateName == NULL )
-		mCurrentStateName = (char*)malloc(1024 * sizeof(char));
-	sprintf_s(mCurrentStateName, 1024*sizeof(char), "%s", gameStatePath);
-
-	mpCurrentState = mpGameStateMap->find(gameStatePath);
-	assert(mpCurrentState != mpGameStateMap->end());
-	mpCurrentState->second->OnEnter();
-
+	mpPreviousState = mpCurrentState;
+	mpCurrentState = mpGameStates[stateID];
+	mpPreviousState->OnExit();
+	mpCurrentState->OnEnter();
 }
 
 void StateMachine::ListLoadedStates()
 {
-	for (GameStateMap::iterator it = mpGameStateMap->begin(); it != mpGameStateMap->end(); ++it)
+	for (unsigned int i = 0; i < mpGameStates.size(); i++)
 	{
-		OutputDebugStringA("Component loaded:");
-		OutputDebugStringA(it->first);
-		OutputDebugStringA("\n");
+		if (mpGameStates[i] != NULL)
+			SDL_Log("State loaded: %d\n", i);
+		else
+			SDL_Log("State NULL/Empty: %d\n", i);
 	}
+}
+
+GameStateBase * StateMachine::GetState(int gameStateID)
+{
+	assert(gameStateID < mpGameStates.size());
+	assert(mpGameStates[gameStateID] != NULL);
+
+	return mpGameStates[gameStateID];
+}
+
+int StateMachine::GetCurrentGameStateID()
+{
+	return mCurrentGameStateID;
 }
 
 void StateMachine::CurrentStateOnUpdate()
 {
-	mpCurrentState->second->OnUpdate();
+	mpCurrentState->OnUpdate();
+}
+
+void StateMachine::CurrentStateOnExit()
+{
+	mpCurrentState->OnExit();
 }
 
 void StateMachine::CurrentStateOnInput(SDL_Event & pEvent)
 {
-	mpCurrentState->second->OnInput(pEvent);
-}
-
-//Meant to used with engine shutdown for automatic cleanup.
-void StateMachine::CurrentStateOnExit()
-{
-	mpCurrentState->second->OnExit();
+	mpCurrentState->OnInput(pEvent);
 }

@@ -130,7 +130,7 @@ void MainMenuState::OnInput(SDL_Event & pEvent)
 		switch (pEvent.key.keysym.sym)
 		{
 		case SDLK_1:
-			Game::GetGame()->GetStateMachine()->TransitionTo("PlayGameState");
+			Game::GetGame()->GetStateMachine()->TransitionTo(GAMESTATE_PLAYGAME);
 			break;
 		case SDLK_2:
 			break;

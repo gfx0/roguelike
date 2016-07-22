@@ -3,6 +3,21 @@
 
 union SDL_Event;
 
+/******************************************************************************
+ *
+ * NOTE: This IDS_OF_GAME_STATES enumerator is here for convenience. 
+ *
+ *		 This way game states can use transitions without an extra include.
+ *		 
+ *****************************************************************************/
+enum IDS_OF_GAME_STATES
+{
+	GAMESTATE_INIT = 0,
+	GAMESTATE_MAINMENU,
+	GAMESTATE_PLAYGAME,
+	GAMESTATE_MAX
+};
+
 class GameStateBase
 {
 public:

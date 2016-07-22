@@ -61,9 +61,9 @@ void Game::Start()
 	/*************************************************************************
 	 *	Load Game States
 	 *************************************************************************/
-	mpStateMachine->LoadState<InitGameState>("InitGameState");
-	mpStateMachine->LoadState<MainMenuState>("MainMenuState");
-	mpStateMachine->LoadState<PlayGameState>("PlayGameState");
+	mpStateMachine->LoadState<InitGameState>(GAMESTATE_INIT);
+	mpStateMachine->LoadState<MainMenuState>(GAMESTATE_MAINMENU);
+	mpStateMachine->LoadState<PlayGameState>(GAMESTATE_PLAYGAME);
 
 	/*************************************************************************
 	 *	Load Engine Game Components
@@ -90,7 +90,7 @@ void Game::Start()
 
 	//NOTE: Temporarily transitioning straight to MainMenuState until state machine transitions can be fixed.
 	//		There is an issue there with unordered_map which is poorly supported by the visual studio compiler in x64 mode.
-	mpStateMachine->TransitionTo("MainMenuState");
+	mpStateMachine->TransitionTo(GAMESTATE_INIT);
 
 }
 

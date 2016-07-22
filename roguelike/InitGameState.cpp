@@ -121,16 +121,6 @@ void InitGameState::OnEnter()
 
 	mIsNewGameLoading = false;
 
-	/****************************************************************************************************************
-
-	__          ______  _____  _  __  _____ _   _   _____  _____   ____   _____ _____  ______  _____ _____ 
-	\ \        / / __ \|  __ \| |/ / |_   _| \ | | |  __ \|  __ \ / __ \ / ____|  __ \|  ____|/ ____/ ____|
-	 \ \  /\  / / |  | | |__) | ' /    | | |  \| | | |__) | |__) | |  | | |  __| |__) | |__  | (___| (___  
-	  \ \/  \/ /| |  | |  _  /|  <     | | | . ` | |  ___/|  _  /| |  | | | |_ |  _  /|  __|  \___ \\___ \ 
-	   \  /\  / | |__| | | \ \| . \   _| |_| |\  | | |    | | \ \| |__| | |__| | | \ \| |____ ____) |___) |
-	    \/  \/   \____/|_|  \_\_|\_\ |_____|_| \_| |_|    |_|  \_\\____/ \_____|_|  \_\______|_____/_____/ 
-
-	 ****************************************************************************************************************/
 }
 
 void InitGameState::OnExit()
@@ -160,23 +150,15 @@ void InitGameState::OnUpdate()
 	{
 		SDL_Log("Doing it once!");
 		SDL_Delay(1000);
-		Game::GetGame()->GetStateMachine()->TransitionTo("MainMenuState");
+		Game::GetGame()->GetStateMachine()->TransitionTo(GAMESTATE_MAINMENU);
 	}
 }
 
 void InitGameState::OnInput(SDL_Event & pEvent)
 {
-	//if ( !pEvent )
-		//return;
-
-	//if ( pEvent == NULL )
-	//	return;
-
 	if (pEvent.type == SDL_QUIT)
-	{
-		Game::GetGame()->Shutdown("Quit pressed during loading screen??");
-		return;
-	}
+		return Game::GetGame()->Shutdown("Quit pressed during loading screen??");
+
 	if (pEvent.type == SDL_KEYDOWN)
 	{
 		switch (pEvent.key.keysym.sym)

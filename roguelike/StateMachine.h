@@ -3,7 +3,8 @@
 
 #include "GameStateBase.h"
 
-#include <unordered_map>
+#include <vector>
+#include <assert.h>
 
 union SDL_Event;
 
@@ -13,36 +14,33 @@ public:
 	StateMachine();
 	~StateMachine();
 
-	void TransitionTo(const char* stateName);
+	void TransitionTo(int stateID);
 	void CurrentStateOnUpdate();
-	void CurrentStateOnInput(SDL_Event & pEvent);
 	void CurrentStateOnExit();
+	void CurrentStateOnInput(SDL_Event & pEvent);
 	void ListLoadedStates();
 
 	template<class T>
-	void LoadState(const char * gameStatePath)
+	void LoadState(int indexPosition)
 	{
+		assert(indexPosition < mpGameStates.size());
 		//TODO: prevent the creation of a new instance of an already existing engine component!
 		//if ( mpGameStateMap->find(componentPath) != mEngineComponents->end() )
-		T * GameState = new T();
-		mpGameStateMap->insert(std::make_pair(gameStatePath, GameState));
+		T * pNewGameState = new T();
+		assert(mpGameStates[indexPosition] == NULL);
+		mpGameStates[indexPosition] = pNewGameState;
 	}
 
-	template<class T>
-	T * GetState(const char * gameStatePath)
-	{
-		GameStateMap::iterator itr = mpGameStateMap->find(gameStatePath);
-		assert(itr == mpGameStateMap->end());
-
-		return static_cast<T*>(itr->second);
-	}
+	GameStateBase* GetState(int gameStateID);
+	int GetCurrentGameStateID();
 
 private:
-	typedef std::tr1::unordered_map<const char*, GameStateBase*> GameStateMap;
-	GameStateMap * mpGameStateMap;
-	GameStateMap::iterator mpPreviousState;
-	GameStateMap::iterator mpCurrentState;
-	char * mCurrentStateName;
+	std::vector<GameStateBase*> mpGameStates;
+	GameStateBase* mpPreviousState;
+	GameStateBase* mpCurrentState;
+
+	int mCurrentGameStateID;
+
 };
 
 #endif // StateMachine_h__

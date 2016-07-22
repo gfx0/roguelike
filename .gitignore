@@ -1,3 +1,8 @@
 *.suo
 *.tlog
 *.obj
+*.opensdf
+x64/Release/roguelike.ipdb
+*.pdb
+*.sdf
+*.ilk
