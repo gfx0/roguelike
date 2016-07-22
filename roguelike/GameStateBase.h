@@ -26,7 +26,7 @@ public:
 
 	virtual void OnEnter() = 0;
 	virtual void OnExit() = 0;
-	virtual void OnUpdate() = 0;
+	virtual void OnUpdate(unsigned int deltaTime) = 0;
 	virtual void OnInput(SDL_Event&) = 0;
 protected:
 private:

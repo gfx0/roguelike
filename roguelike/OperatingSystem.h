@@ -13,7 +13,7 @@ private:
 public:
 	bool Start();
 	void Stop();
-	void Update();
+	void Update(unsigned int deltaTime);
 	char * GetBasePath();
 };
 #endif // OperatingSystem_h__

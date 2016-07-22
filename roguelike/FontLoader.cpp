@@ -43,7 +43,7 @@ void FontLoader::Stop()
 }
 
 
-void FontLoader::Update()
+void FontLoader::Update( unsigned int deltaTime )
 {
 
 }

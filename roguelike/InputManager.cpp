@@ -21,6 +21,6 @@ void InputManager::Stop()
 }
 
 
-void InputManager::Update()
+void InputManager::Update( unsigned int deltaTime )
 {
 }

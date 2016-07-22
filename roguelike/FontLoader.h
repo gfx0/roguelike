@@ -26,7 +26,7 @@ public:
 	SDL_Texture * RenderText(char * message, fonts fontToUse , SDL_Color color, int fontSize, SDL_Renderer *renderer);
 	bool Start();
 	void Stop();
-	void Update();
+	void Update( unsigned int deltaTime );
 
 
 private:

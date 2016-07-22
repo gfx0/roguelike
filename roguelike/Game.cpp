@@ -36,6 +36,14 @@ Game* Game::pGame = NULL;
 Game::Game()
 	: mIsInitializing(false)
 	, mIsRunning(false)
+	/**************
+	 * Time Init.
+	 **************/
+	, mStartTime(0)
+	, mTotalTime(0)
+	, mCurrentTime(0)
+	, mLastTime(0)
+	, mDeltaTime(0)
 {
 	mpStateMachine = new StateMachine();
 	mpEngineComponentManager = new EngineComponentManager();
@@ -74,13 +82,13 @@ void Game::Start()
 	mpEngineComponentManager->LoadComponent<FontLoader>("FontLoader");
 	mpEngineComponentManager->LoadComponent<InputManager>("InputManager");
 	
-	mpEngineComponentManager->ListLoadedComponents();
+	//mpEngineComponentManager->ListLoadedComponents();
 
 	/*************************************************************************
 	*	If even one component fails to initialize, shut down engine and fix.
 	*************************************************************************/
 	if (!mpEngineComponentManager->InitializeAllComponents())
-		this->Shutdown();
+		return this->Shutdown("Some engine component returned false when trying to start it! Something is borked!");
 
 	/*************************************************************************
 	*	Initialization successful, do post init stuff.
@@ -88,8 +96,18 @@ void Game::Start()
 	mIsRunning = true;
 	mIsInitializing = false;
 
-	//NOTE: Temporarily transitioning straight to MainMenuState until state machine transitions can be fixed.
-	//		There is an issue there with unordered_map which is poorly supported by the visual studio compiler in x64 mode.
+
+	/*************************************************************************
+	*	Initialize game core timer.
+	*************************************************************************/
+	mStartTime = SDL_GetTicks();
+	mTotalTime = mStartTime;
+	mLastTime = 0;
+	mDeltaTime = 0;
+
+	/*************************************************************************
+	*	Start running meaningful gameplay.
+	*************************************************************************/
 	mpStateMachine->TransitionTo(GAMESTATE_INIT);
 
 }
@@ -105,18 +123,31 @@ void Game::Update()
 	if (mIsInitializing)
 		return;
 
-	//Poll for input
+	mCurrentTime = SDL_GetTicks();
+	mTotalTime += mCurrentTime;
+	mDeltaTime = mCurrentTime - mLastTime;
 
-	//Update all game components, at the moment this also renders.
-	mpEngineComponentManager->Update();
+	//Debug timers:
+	//SDL_Log("curTime: %d totalTime: %d lastTime: %d deltaTime: %f test: %fs\n", mCurrentTime, mTotalTime, mLastTime, mDeltaTime);
 
-	//Update current game state
-	mpStateMachine->CurrentStateOnUpdate();
+	mLastTime = mCurrentTime;
 
-	//Is there any input event in queue? If so, pass it on.
+	/**********************************
+	*	Poll for input.
+	***********************************/
 	SDL_Event mpSDLEventInQueue;
-	if ( SDL_PollEvent(&mpSDLEventInQueue) == 1 ) //Returns 1 if event is pending.
+	if (SDL_PollEvent(&mpSDLEventInQueue) == 1) //Returns 1 if event is pending.
 		mpStateMachine->CurrentStateOnInput(mpSDLEventInQueue);
+
+	/**********************************
+	*	Update engine components.
+	***********************************/
+	mpEngineComponentManager->Update( mDeltaTime );
+
+	/**********************************
+	*	Update current game state.
+	***********************************/
+	mpStateMachine->CurrentStateOnUpdate( mDeltaTime );
 
 	//Render here or in state?
 	//mpRenderingSystem->render();

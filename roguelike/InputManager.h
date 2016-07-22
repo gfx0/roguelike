@@ -13,6 +13,6 @@ private:
 public:
 	bool Start();
 	void Stop();
-	void Update();
+	void Update(unsigned int deltaTime);
 };
 #endif // InputManager_h__

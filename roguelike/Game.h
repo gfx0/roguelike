@@ -50,6 +50,15 @@ private:
 	
 	//TODO: mpInputManager?
 
+	/**********************************
+	*	Game time.
+	***********************************/
+	unsigned int mStartTime;
+	unsigned int mTotalTime;
+	unsigned int mCurrentTime;
+	unsigned int mLastTime;
+	unsigned int mDeltaTime;
+
 };
 
 #endif // Game_h__

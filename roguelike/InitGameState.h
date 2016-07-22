@@ -14,7 +14,7 @@ public:
 
 	virtual void OnEnter();
 	virtual void OnExit();
-	virtual void OnUpdate();
+	virtual void OnUpdate(unsigned int deltaTime);
 	virtual void OnInput(SDL_Event&);
 
 protected:
@@ -31,10 +31,7 @@ private:
 	//NOTE: For now these sprites are stupidly here, later on in spritemanager / in their 
 	//		own CharacterManager / Character classes.
 	SDL_Texture * mpLoadingScreenBackground;
-	SDL_Texture * mpWallTileTexture;
-	SDL_Texture * mpPlayerSprite;
-	SDL_Texture * mpTestSpriteSheet;
-	SDL_Texture * mpStatusBarImageFontTexture;
+	SDL_Texture * mpLoadingScreenTextMessage;
 
 	/**********************************
 	 * Temporary "demo" player action.
@@ -46,7 +43,7 @@ private:
 	int mCachedWindowHeightHalf;
 	int mCachedWindowWidthHalf;
 
-	int mTmeToWaitNotYetDelta;
+	int mTimeToWaitUntilTransitioningMS;
 };
 
 #endif // InitGameState_h__

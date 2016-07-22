@@ -91,34 +91,10 @@ void PlayGameState::OnEnter()
 	*
 	****************************************************/
 
-
-
-	// TODO:		First show a 'loading ...' image
-	//				Then load all the rest of the textures
-	//				Load the font
-	//				Initialize the game logic
-	//				Transition to the play game state and actually use the initialized assets.
-
 	mpOperatingSystem = Game::GetGame()->GetEngineComponent<OperatingSystem>("OperatingSystem");
 	mpRenderingSystem = Game::GetGame()->GetEngineComponent<RenderingSystem>("RenderingSystem");
 	mpImageLoader = Game::GetGame()->GetEngineComponent<ImageLoader>("ImageLoader");
 	mpFontLoader = Game::GetGame()->GetEngineComponent<FontLoader>("FontLoader");
-
-	WindowCreationInfo info;
-	info.x = SDL_WINDOWPOS_CENTERED;
-	info.y = SDL_WINDOWPOS_CENTERED;
-	info.w = 1280; // GetSystemMetrics(SM_CXSCREEN);
-	info.h = 720; // GetSystemMetrics(SM_CYSCREEN);
-	info.borderless = true;
-	info.fullscreen = false;
-
-	mCachedWindowWidth = 1280;
-	mCachedWindowHeight = 720;	
-	mCachedWindowWidthHalf = 1280/2;
-	mCachedWindowHeightHalf = 720/2;
-
-	if ( mpRenderingSystem->CreateWindow(info) != 0 )
-		return Game::GetGame()->Shutdown("Could not create a window, shutting down...\n");
 
 	/**************************
 	 * Texture loading
@@ -169,11 +145,9 @@ void PlayGameState::OnExit()
 		SDL_DestroyTexture(mpTestSpriteSheet);
 	if ( mpPlayerSprite )
 		SDL_DestroyTexture(mpPlayerSprite);
-
-	//delete mpRenderingSystem;
 }
 
-void PlayGameState::OnUpdate()
+void PlayGameState::OnUpdate( unsigned int deltaTime )
 {
 	/**********************************
 	 * Still loading sprites etc?
@@ -258,7 +232,8 @@ void PlayGameState::OnInput(SDL_Event & pEvent)
 		case SDLK_4:
 			break;
 		case SDLK_ESCAPE:
-			Game::GetGame()->Shutdown("Quit from playgamestate.");
+			//TODO: Pause menu state?
+			Game::GetGame()->GetStateMachine()->TransitionTo(GAMESTATE_MAINMENU);
 			break;
 		default:
 			break;

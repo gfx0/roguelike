@@ -45,7 +45,7 @@ void RenderingSystem::Stop()
 }
 
 
-void RenderingSystem::Update()
+void RenderingSystem::Update( unsigned int deltaTime )
 {
 
 }

@@ -41,7 +41,7 @@ void ImageLoader::Stop()
 }
 
 
-void ImageLoader::Update()
+void ImageLoader::Update( unsigned int deltaTime )
 {
 
 }

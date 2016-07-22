@@ -37,7 +37,7 @@ void OperatingSystem::Stop()
 }
 
 
-void OperatingSystem::Update()
+void OperatingSystem::Update( unsigned int deltaTime )
 {
 
 }

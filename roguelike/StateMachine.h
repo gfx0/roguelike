@@ -15,9 +15,9 @@ public:
 	~StateMachine();
 
 	void TransitionTo(int stateID);
-	void CurrentStateOnUpdate();
-	void CurrentStateOnExit();
+	void CurrentStateOnUpdate(unsigned int deltaTime);
 	void CurrentStateOnInput(SDL_Event & pEvent);
+	void CurrentStateOnExit();
 	void ListLoadedStates();
 
 	template<class T>

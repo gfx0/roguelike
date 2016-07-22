@@ -30,7 +30,7 @@ public:
 
 	bool Start();
 	void Stop();
-	void Update();
+	void Update(unsigned int deltaTime);
 
 	void Render();
 	void Clear();

@@ -16,7 +16,7 @@ private:
 public:
 	bool Start();
 	void Stop();
-	void Update();
+	void Update(unsigned int deltaTime);
 	SDL_Texture* LoadTexture(char * filePath, SDL_Renderer *ren);
 };
 #endif // ImageLoader_h__

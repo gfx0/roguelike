@@ -13,7 +13,7 @@ public:
 	~EngineComponentManager();
 
 	void ListLoadedComponents();
-	void Update();
+	void Update(unsigned int deltaTime);
 	bool InitializeAllComponents();
 	void DeInitializeAllComponents();
 

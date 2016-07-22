@@ -28,7 +28,8 @@ InitGameState::InitGameState()
 	, mpRenderingSystem(NULL)
 	, mpFontLoader(NULL)
 	, mpImageLoader(NULL)
-	, mTmeToWaitNotYetDelta(0)
+	, mTimeToWaitUntilTransitioningMS(2000)
+	//TODO: Initialize the rest of the demo member variables, blah tedious...
 {
 
 }
@@ -86,14 +87,6 @@ void InitGameState::OnEnter()
 	*
 	****************************************************/
 
-
-
-	// TODO:		First show a 'loading ...' image
-	//				Then load all the rest of the textures
-	//				Load the font
-	//				Initialize the game logic
-	//				Transition to the play game state and actually use the initialized assets.
-
 	mpOperatingSystem = Game::GetGame()->GetEngineComponent<OperatingSystem>("OperatingSystem");
 	mpRenderingSystem = Game::GetGame()->GetEngineComponent<RenderingSystem>("RenderingSystem");
 	mpImageLoader = Game::GetGame()->GetEngineComponent<ImageLoader>("ImageLoader");
@@ -110,12 +103,32 @@ void InitGameState::OnEnter()
 	if ( mpRenderingSystem->CreateWindow(info) != 0 )
 		return Game::GetGame()->Shutdown("Could not create a window, shutting down...\n");
 
+	/**********************************
+	*	Font loading
+	**********************************/
 	char *resourceBasePath = mpOperatingSystem->GetBasePath();
+	char fullFilePath[2048] = "";
+	sprintf(fullFilePath, "%sfonts\\sample.ttf", resourceBasePath);
+	if (!mpFontLoader->LoadFont(fullFilePath, 32))
+		Game::GetGame()->Shutdown("Could not load font :(\n");
+	
+	/**********************************
+	*	Loading screen background image
+	**********************************/
 	char loadingScreenBackground[1024];
 	sprintf(loadingScreenBackground, "%sgfx\\loadingscreenbackground.png", resourceBasePath);
-
-	//TODO: Pool these texture pointers into the image loader / image manager instead of keeping them on stack like this.
+	//TODO: Pool these texture pointers into the image loader / image manager instead of this kind of management.
 	mpLoadingScreenBackground = mpImageLoader->LoadTexture(loadingScreenBackground, mpRenderingSystem->GetRenderer());
+
+	SDL_Color color = { 0, 100, 0, 255 };
+	char msg[512];
+	sprintf(msg, "Systems initialized successfully. Engine version: 0.01");
+	mpLoadingScreenTextMessage = mpFontLoader->RenderText(msg, FontLoader::FONT_SAMPLE, color, 32, mpRenderingSystem->GetRenderer());
+	if (mpLoadingScreenTextMessage == nullptr)
+	{
+		Game::GetGame()->Shutdown("Failed to create a font text texture for showing the testing text of this demo..\n");
+		return;
+	}
 
 	mpRenderingSystem->Clear();
 
@@ -125,11 +138,11 @@ void InitGameState::OnEnter()
 
 void InitGameState::OnExit()
 {
-	//TODO: game shutdown kills this atm. this needs work.
-	//delete mpRenderingSystem;
+	if ( mpLoadingScreenBackground )
+		SDL_DestroyTexture(mpLoadingScreenBackground);
 }
 
-void InitGameState::OnUpdate()
+void InitGameState::OnUpdate( unsigned int deltaTime )
 {
 	/**********************************
 	 * Still loading sprites etc?
@@ -138,20 +151,19 @@ void InitGameState::OnUpdate()
 		return;
 
 	mpRenderingSystem->RenderTexture(mpLoadingScreenBackground, 0, 0);
+	mpRenderingSystem->RenderTexture(mpLoadingScreenTextMessage, 128, 720 - 100);
 	mpRenderingSystem->Render();
 
 
 	/**********************************
 	 * ! ARTIFICIAL TEMP DELAY !
 	 **********************************/
-	SDL_Log("mTmeToWaitNotYetDelta: %d", mTmeToWaitNotYetDelta);
-	//mTmeToWaitNotYetDelta++;
-	//if ( mTmeToWaitNotYetDelta > 50 )
+	mTimeToWaitUntilTransitioningMS -= deltaTime;
+	if ( mTimeToWaitUntilTransitioningMS <= 0 )
 	{
-		SDL_Log("Doing it once!");
-		SDL_Delay(1000);
 		Game::GetGame()->GetStateMachine()->TransitionTo(GAMESTATE_MAINMENU);
 	}
+
 }
 
 void InitGameState::OnInput(SDL_Event & pEvent)

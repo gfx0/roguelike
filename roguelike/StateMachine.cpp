@@ -78,17 +78,17 @@ int StateMachine::GetCurrentGameStateID()
 	return mCurrentGameStateID;
 }
 
-void StateMachine::CurrentStateOnUpdate()
+void StateMachine::CurrentStateOnUpdate( unsigned int deltaTime )
 {
-	mpCurrentState->OnUpdate();
-}
-
-void StateMachine::CurrentStateOnExit()
-{
-	mpCurrentState->OnExit();
+	mpCurrentState->OnUpdate( deltaTime );
 }
 
 void StateMachine::CurrentStateOnInput(SDL_Event & pEvent)
 {
 	mpCurrentState->OnInput(pEvent);
+}
+
+void StateMachine::CurrentStateOnExit()
+{
+	mpCurrentState->OnExit();
 }

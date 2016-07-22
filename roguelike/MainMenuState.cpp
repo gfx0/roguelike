@@ -46,45 +46,12 @@ void MainMenuState::OnEnter()
 	mpImageLoader = Game::GetGame()->GetEngineComponent<ImageLoader>("ImageLoader");
 	mpFontLoader = Game::GetGame()->GetEngineComponent<FontLoader>("FontLoader");
 
-	/**************************************************************************
-	 *
-	 *
-	 *
-	 *		TODO:		mpRenderer of RenderingSystem is invalid after first
-	 *					creation... Solve with reference pointer or some such.
-	 *
-	 *
-	 *
-	 **************************************************************************/
-
-	WindowCreationInfo info;
-	info.x = SDL_WINDOWPOS_CENTERED;
-	info.y = SDL_WINDOWPOS_CENTERED;
-	info.w = 1280; // GetSystemMetrics(SM_CXSCREEN);
-	info.h = 720; // GetSystemMetrics(SM_CYSCREEN);
-	info.borderless = true;
-	info.fullscreen = false;
-
-	mMainMenuTextsX = 1280/2 - 200;
-	mMainMenuTextsY = 720/2;
-
-	if ( mpRenderingSystem->CreateWindow(info) != 0 )
-		return Game::GetGame()->Shutdown("Could not create a window, shutting down...\n");
-
 	char *resourceBasePath = mpOperatingSystem->GetBasePath();
 	char mainMenuBackground[1024];
 	sprintf(mainMenuBackground, "%sgfx\\mainmenu.png", resourceBasePath);
 
-	//TODO: Pool these texture pointers into the image loader / image manager instead of keeping them on stack like this.
+	//TODO: Pool these texture pointers into the image loader / image manager instead of managing them like this.
 	mpMainMenuBackgroundImage = mpImageLoader->LoadTexture(mainMenuBackground, mpRenderingSystem->GetRenderer());
-	
-	/**********************************
-	 *	Font loading
-	 **********************************/
-	char fullFilePath[2048] = "";
-	sprintf(fullFilePath, "%sfonts\\sample.ttf", resourceBasePath);
-	if ( !mpFontLoader->LoadFont(fullFilePath, 32) )
-		Game::GetGame()->Shutdown("Could not load font :(\n");
 
 	SDL_Color color = { 255, 255, 255, 255 };
 	mpMainMenuOptionsTexts = mpFontLoader->RenderText("1. Start Game 2. Options 3. Quit", FontLoader::FONT_SAMPLE, color, 32, mpRenderingSystem->GetRenderer());
@@ -94,26 +61,32 @@ void MainMenuState::OnEnter()
 		return;
 	}
 
+	mpGameTitle = mpFontLoader->RenderText("GAME NAME HERE", FontLoader::FONT_SAMPLE, color, 32, mpRenderingSystem->GetRenderer());
+	if (mpGameTitle == nullptr)
+	{
+		Game::GetGame()->Shutdown("Failed to create a font text texture for showing the testing text of this demo..\n");
+		return;
+	}
+
 }
 
 void MainMenuState::OnExit()
 {
-	//TODO: At the moment these are deleted by the game...
-	/*
-	delete mpOperatingSystem;
-	delete mpImageLoader;
-	delete mpFontLoader;
-	delete mpRenderingSystem;
-	*/
+	if (mpMainMenuBackgroundImage)
+		SDL_DestroyTexture(mpMainMenuBackgroundImage);
+	if (mpGameTitle)
+		SDL_DestroyTexture(mpGameTitle);
+	if (mpMainMenuOptionsTexts)
+		SDL_DestroyTexture(mpMainMenuOptionsTexts);
 }
 
-void MainMenuState::OnUpdate()
+void MainMenuState::OnUpdate( unsigned int deltaTime )
 {
-
 	//Render the scene
 	mpRenderingSystem->Clear();
 	mpRenderingSystem->RenderTexture(mpMainMenuBackgroundImage, 0, 0);
-	mpRenderingSystem->RenderTexture(mpMainMenuOptionsTexts, mMainMenuTextsX, mMainMenuTextsY);
+	mpRenderingSystem->RenderTexture(mpMainMenuOptionsTexts, 1200/2-192, 720/2);
+	mpRenderingSystem->RenderTexture(mpGameTitle, 1280/2-128, 128);
 	mpRenderingSystem->Render();
 }
 

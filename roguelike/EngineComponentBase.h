@@ -9,7 +9,7 @@ public:
 
 	virtual bool Start() = 0;
 	virtual void Stop() = 0;
-	virtual void Update() = 0;
+	virtual void Update( unsigned int deltaTime ) = 0;
 
 protected:
 private:

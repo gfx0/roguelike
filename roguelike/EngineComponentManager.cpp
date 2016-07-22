@@ -29,10 +29,10 @@ void EngineComponentManager::ListLoadedComponents()
 	}
 }
 
-void EngineComponentManager::Update()
+void EngineComponentManager::Update( unsigned int deltaTime )
 {
 	for (GameComponentMap::iterator it = mpGameComponentMap->begin(); it != mpGameComponentMap->end(); ++it)
-		it->second->Update();
+		it->second->Update( deltaTime );
 }
 
 bool EngineComponentManager::InitializeAllComponents()
