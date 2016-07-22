@@ -1,7 +1,5 @@
 #include "StateMachine.h"
 
-#include <windows.h>
-
 #include <SDL.h> //for SDL_Event input handling
 
 /*****************************************************************************

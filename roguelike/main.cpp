@@ -1,4 +1,6 @@
 #include "Game.h"
+
+//NOTE: Add ifdefs for other platforms here and gg, things "should"(tm) work out of the box for mac and linux. (ofc main can't be winmain lol)
 #include <windows.h>
 
 int APIENTRY WinMain(
