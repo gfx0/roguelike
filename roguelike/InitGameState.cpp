@@ -111,7 +111,7 @@ void InitGameState::OnEnter()
 	**********************************/
 	char *resourceBasePath = mpOperatingSystem->GetBasePath();
 	char fullFilePath[2048] = "";
-	sprintf(fullFilePath, "%sfonts\\sample.ttf", resourceBasePath);
+	sprintf(fullFilePath, "%sfonts\\dpcomic.ttf", resourceBasePath);
 	if (!mpFontLoader->LoadFont(fullFilePath, 32))
 		Game::GetGame()->Shutdown("Could not load font :(\n");
 	
