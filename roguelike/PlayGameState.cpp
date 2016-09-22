@@ -7,22 +7,17 @@
 #include "FontLoader.h"
 #include "OperatingSystem.h"
 
-#include <time.h> //srand
-
 #include <stdio.h>
 
 #include <SDL_image.h>
-#include <SDL_ttf.h>
-#include <assert.h>
 
-/*************************************************************
-*
-* This game state initializes a new game for the player.
-*
-* What that means, is that it loads the level and initializes
-* any and all data necessary for the player and the enemies.
-*
-*************************************************************/
+/******************************************************************************
+ *
+ * This is the state where actual gameplay happens.
+ *
+ * Here should be a description of this specific states goal :)
+ *
+ *****************************************************************************/
 PlayGameState::PlayGameState()
 	: mIsNewGameLoading(true)
 	, mpRenderingSystem(NULL)
@@ -34,6 +29,11 @@ PlayGameState::PlayGameState()
 	, mCachedWindowHeight(0)
 	, mCachedWindowHeightHalf(0)
 	, mCachedWindowWidthHalf(0)
+	, mpOperatingSystem(NULL)
+	, mpWallTileTexture(NULL)
+	, mpPlayerSprite(NULL)
+	, mpTestSpriteSheet(NULL)
+	, mpStatusBarImageFontTexture(NULL)
 {
 
 }

@@ -7,8 +7,6 @@
 #include "FontLoader.h"
 #include "OperatingSystem.h"
 
-#include <time.h> //srand
-
 #include <stdio.h>
 
 #include <SDL_image.h>
@@ -17,10 +15,16 @@
 
 /*************************************************************
 *
-* This game state initializes a new game for the player.
+* This state is where the player chooses his main actions.
 *
-* What that means, is that it loads the level and initializes
-* any and all data necessary for the player and the enemies.
+*
+* For the first prototype, something simple like:
+*
+*	1) New Game
+*	2) Options
+*	3) Quit Game
+*
+* Maybe add Load / Save game later etc? Perhaps online game?
 *
 *************************************************************/
 MainMenuState::MainMenuState()
@@ -30,6 +34,11 @@ MainMenuState::MainMenuState()
 	, mpMainMenuBackgroundImage(NULL)
 	, mpGameTitle(NULL)
 	, mpMainMenuOptionsTexts(NULL)
+	, mpOperatingSystem(NULL)
+	, mGameTitleX(0)
+	, mGameTitleY(0)
+	, mMainMenuTextsX(0)
+	, mMainMenuTextsY(0)
 {
 
 }

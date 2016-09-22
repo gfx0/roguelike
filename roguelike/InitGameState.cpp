@@ -7,8 +7,6 @@
 #include "FontLoader.h"
 #include "OperatingSystem.h"
 
-#include <time.h> //srand
-
 #include <stdio.h>
 
 #include <SDL_image.h>
@@ -19,9 +17,6 @@
 *
 * This game state initializes a new game for the player.
 *
-* What that means, is that it loads the level and initializes
-* any and all data necessary for the player and the enemies.
-*
 *************************************************************/
 InitGameState::InitGameState()
 	: mIsNewGameLoading(true)
@@ -29,7 +24,15 @@ InitGameState::InitGameState()
 	, mpFontLoader(NULL)
 	, mpImageLoader(NULL)
 	, mTimeToWaitUntilTransitioningMS(2000)
-	//TODO: Initialize the rest of the demo member variables, blah tedious...
+	, mpOperatingSystem(NULL)
+	, mpLoadingScreenBackground(NULL)
+	, mpLoadingScreenTextMessage(NULL)
+	, mPlayerTempX(0)
+	, mPlayerTempY(0)
+	, mCachedWindowWidth(0)
+	, mCachedWindowHeight(0)
+	, mCachedWindowWidthHalf(0)
+	, mCachedWindowHeightHalf(0)
 {
 
 }

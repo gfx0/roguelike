@@ -3,6 +3,9 @@
 
 #include "EngineComponentBase.h"
 
+//TODO: Refactor unordered_map to simple vectors with enum indices?
+//		Research whether we're being overly complex here and if a vector based enum retrieval would be faster.
+
 #include <unordered_map>
 #include <cassert>
 

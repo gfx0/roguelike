@@ -2,12 +2,13 @@
 
 #include <windows.h>
 
-/*****************************************************************************
+/******************************************************************************
 
-	Purpose of this is to control the Engine Components of the "car" that is
-	this "game engine" here represents. 
+	The purpose of this manager is to manage and control the:
 
-*****************************************************************************/
+			"Parts of the engine" of the "Car"
+
+******************************************************************************/
 
 EngineComponentManager::EngineComponentManager()
 {

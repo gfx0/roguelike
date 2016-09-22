@@ -6,3 +6,10 @@ x64/Release/roguelike.ipdb
 *.pdb
 *.sdf
 *.ilk
+*.suo
+*.sdf
+roguelike/x64/Debug/roguelike.log
+*.idb
+roguelike/x64/Release/roguelike.log
+*.iobj
+roguelike.sdf

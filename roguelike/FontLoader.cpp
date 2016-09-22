@@ -5,7 +5,7 @@
 #include <SDL_ttf.h>
 #include <stdio.h>
 
-/*****************************************************************************
+/******************************************************************************
 
 	Purpose of this component is to purely load many types truetype fonts.
 	It could contain the fonts themselves, since the engine might get 
@@ -13,9 +13,10 @@
 	
 	TODO: Add support for bitmap fonts?
 
-*****************************************************************************/
+******************************************************************************/
 
 FontLoader::FontLoader()
+: mFont(NULL)
 {
 
 }

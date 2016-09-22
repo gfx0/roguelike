@@ -5,11 +5,10 @@
 #include <cassert>
 
 /*****************************************************************************
-
-	Purpose of this system is to display graphics on screen for the player.
-
-*****************************************************************************/
-
+ 
+ 	Purpose of this system is to display graphics on screen for the player.
+ 
+******************************************************************************/
 RenderingSystem::RenderingSystem()
 : mpWindow(NULL)
 , mpRenderer(NULL)

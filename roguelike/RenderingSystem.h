@@ -12,6 +12,10 @@ struct WindowCreationInfo
 	WindowCreationInfo()
 		: borderless(false)
 		, fullscreen(false)
+		, x(0)
+		, y(0)
+		, w(640)
+		, h(480)
 	{}
 
 	int x;

@@ -1,5 +1,11 @@
 #include "InputManager.h"
 
+/*****************************************************************************
+
+	Joysticks, Gamepads, Mouse, Keyboard, you get the picture.
+
+*****************************************************************************/
+
 InputManager::InputManager()
 {
 
