@@ -1,17 +1,13 @@
 #include "Game.h"
+#include "OperatingSystem.h"
 
-//NOTE: Add ifdefs for other platforms here and gg, things "should"(tm) work out of the box for mac and linux. (ofc main can't be winmain lol)
-#include <windows.h>
-
-int APIENTRY WinMain(
-	HINSTANCE instance,
-	HINSTANCE previousInstance,
-	LPSTR commandLine,
-	int commandShow)
+int main(int argCount, char *argValues[])
 {
 
-	Game * pGame = new Game();
+	if (int result = g_initOS(argCount, argValues) != 0)
+		return result;
 
+	Game * pGame = new Game();
 	pGame->Start();
 
 	while (pGame->IsOn())

@@ -2,6 +2,8 @@
 #define OperatingSystem_h__
 #include "EngineComponentBase.h"
 
+int g_initOS(int argCount, char * argValues[]);
+
 class OperatingSystem : public EngineComponentBase
 {
 public:
@@ -11,6 +13,7 @@ public:
 private:
 
 public:
+
 	bool Start();
 	void Stop();
 	void Update(unsigned int deltaTime);
